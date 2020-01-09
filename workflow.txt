@@ -1,0 +1,14 @@
+1. Front end:
+    a. create functionality for buttons
+    b. insert image placeholders
+    c. insert menus (using django placeholders)
+    d. create functionality for search form
+    e. create footer display of data
+
+2. Back end:
+    a. Choose a way for handling sub - types of A/C
+    b. migrate models
+    c. create user login form
+    d. create "business logic" layer (???)
+
+3. Algorithms:
