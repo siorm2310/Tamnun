@@ -1,7 +1,7 @@
 1. Front end:
     a. create functionality for buttons
-    b. insert image placeholders
-    c. insert menus (using django placeholders)
+    b. insert image placeholders.
+    c. insert menus (using django placeholders) ATTENTION: Bootstrap's "card" class is selected for menu / bar place holders
     d. create functionality for search form
     e. create footer display of data
 
