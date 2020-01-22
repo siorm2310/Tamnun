@@ -13,7 +13,7 @@ class AircraftType(models.Model):
     Sorted by TMS
     """
     RLE = models.FloatField(name='RLE')
-    MAC = models.FloatField(null=True, name='MAC')
+    MAC = models.FloatField(name='MAC',null=True , blank=True)
     TMS = models.CharField(max_length = 8, name = 'TMS', unique = True , help_text  = "Use the following format : XX-XX-XX") # AA-BB-CC format
     IAFname = models.CharField(max_length=32, name='IAFname' , help_text = "Hebrew name, e.g : Zik, Adir")
     modelName = models.CharField(max_length=32, name='modelName', help_text = "Commertial name, e.g : F-16, CH-53")
@@ -58,9 +58,11 @@ class Item(models.Model):
     hasLateralData = models.BooleanField(name='hasLateralData')
     weight = models.FloatField(name='weight')
     x_cg = models.FloatField(name='x_cg')
-    y_cg = models.FloatField(name='y_cg', null=True)
+    y_cg = models.FloatField(name='y_cg', blank=True)
+    x_dim = models.FloatField(name='x_dim', default=10, help_text="Enter estimated dimentions relative to A/C in inch/cm. If not known, set to default") # X dimentions for the item
+    y_dim = models.FloatField(name='y_dim', default=10,  help_text="Enter estimated dimentions relative to A/C in inch/cm. If not known, set to default") # Y dimentions for the item
     relatedAircraft = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
-    itemGroup = models.ForeignKey(ItemGroup, on_delete=models.CASCADE, null=True)
+    itemGroup = models.ForeignKey(ItemGroup, on_delete=models.CASCADE, null=True , blank=True)
     isFuelTank = models.BooleanField(name='isFuelTank')
     isExpendable = models.BooleanField(name='isExpendable')
     # itemImage = models.ImageField(null = True)
@@ -80,7 +82,7 @@ class Aircraft(models.Model):
     aircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE , null=True)
 
     def __str__(self):
-        return f"AIRCRAFT TYPE : {self.aircraftType} ; TAIL NUMBER : {self.tailNumber} ; TMS : {AircraftType.TMS}"
+        return f"TAIL NUMBER : {self.tailNumber} TYPE : {self.aircraftType} SUB_TYPE : {self.aircraftSubType}"
 
 class FuelFlow(models.Model):
     """
@@ -89,26 +91,26 @@ class FuelFlow(models.Model):
     An aircraft type can be linked to multiple fuelflows
     WARNING : as we use the ArrayField database field, we need to use postgreSQL database
     """
-    fuelFlowDescription = models.CharField(max_length = 32, name = 'fuelDescription')
-    aircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE )
-    relatedItem = models.ForeignKey(Item, on_delete=models.CASCADE , null=True)
+    fuelFlowDescription = models.CharField(max_length = 32, name = 'fuelDescription' help_text="Enter a short description for the fuel flow")
+    aircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedItem = models.ForeignKey(Item, on_delete=models.CASCADE , null=True , blank=True)
     isInternal = models.BooleanField()
-    # fuelFlow = ArrayField(models.FloatField()) #TODO: choose design method for nX2 arrays
+    fuelFlow = ArrayField(ArrayField(models.FloatField()))
  
     def __str__(self):
         return f"FUEL-FLOW. AIRCRAFT TYPE : {self.aircraftType} ; DESCRIPTION : {self.fuelFlowDescription}"
 
-class Envelopes(models.Model):
+class Envelope(models.Model):
     """
     Envelopes model holds all weight-CG envelopes.
     Each Envelope holds the relevant aircraft type, as well as Longitudal/Lateral identifier.
     WARNING : as we use the ArrayField database field, we need to use postgreSQL database
     """
+    envelopeName = models.CharField(max_length=32 , help_text="Enter a short description for the envelope")
     ENVELOPE_TYPE = (('LONG','Longitudal'),('LAT', 'Lateral')) # Restrict choices for envelope types
     aircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE , related_name='aircraftType')
-    aircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE, null=True)
+    aircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE, null=True , blank=True)
     envelopeType = models.CharField(max_length=4, choices=ENVELOPE_TYPE, default='LONG')
-    # Envelope = ArrayField(models.FloatField()) #TODO: choose design method for nX2 arrays
-
+    Envelope = ArrayField(ArrayField(models.FloatField()))
     def __str__(self):
         return f"ENVELOPE. AIRCRAFT TYPE : {self.aircraftType} ; TYPE : {self.envelopeType}"

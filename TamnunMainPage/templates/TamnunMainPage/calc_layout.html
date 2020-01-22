@@ -21,6 +21,7 @@
       </div>
       <button type="submit" class="btn btn-primary">חפש</button>
     </form>
+    <img  id="tamnun_logo" src="{% static 'TamnunMainPage/Logo.jpg' %}" alt="לוגו תמנון" srcset="" height=100px width=100px>
   </div>
 </nav>
 
@@ -31,12 +32,9 @@
               {% include "TamnunMainPage/_results_bar.html" %}
             </div>
             <div class="col-sm-8 text-center">
-              {% block schematic %}
                 <h1>תמנון</h1>
                 <h2>אזור שרטוט ראשי</h2>
-                <h3>המשך שרטוט</h3>
-                <p>עוד טקסט</p>
-              {% endblock %}
+                {% include "TamnunMainPage/_schematic.html" %}
             </div>
             <div class="col-sm-2 sidenav">
                 <!-- This is the right changing menu. the partial .html file creates the menu -->
