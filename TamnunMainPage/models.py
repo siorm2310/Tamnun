@@ -4,7 +4,7 @@ from django.contrib.postgres.fields import ArrayField,JSONField # Postgres speci
 # Models file. contains the models for the Tamnun application. migrate these models to update the database
 
 # TODO: Validate that all required parameters have been passed
-# TODO: Choose a way for handling images and files (other then static files)
+# TODO: Choose a way for handling images and files (other than static files)
 # TODO: Choose a way for handling sub - types of A/C
 
 class AircraftType(models.Model):
@@ -65,7 +65,7 @@ class Item(models.Model):
     itemGroup = models.ForeignKey(ItemGroup, on_delete=models.CASCADE, null=True , blank=True)
     isFuelTank = models.BooleanField(name='isFuelTank')
     isExpendable = models.BooleanField(name='isExpendable')
-    # itemImage = models.ImageField(null = True)
+    # itemImage = models.ImageField(null = True) 
 
     def __str__(self):
         return f"ITEM : {self.itemName} ; WEIGHT = {self.weight} ; X-CG  = {self.x_cg} ; Y-CG = {self.y_cg}"
@@ -91,7 +91,7 @@ class FuelFlow(models.Model):
     An aircraft type can be linked to multiple fuelflows
     WARNING : as we use the ArrayField database field, we need to use postgreSQL database
     """
-    fuelFlowDescription = models.CharField(max_length = 32, name = 'fuelDescription' help_text="Enter a short description for the fuel flow")
+    fuelFlowDescription = models.CharField(max_length = 32, name = 'fuelDescription',  help_text="Enter a short description for the fuel flow")
     aircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
     relatedItem = models.ForeignKey(Item, on_delete=models.CASCADE , null=True , blank=True)
     isInternal = models.BooleanField()

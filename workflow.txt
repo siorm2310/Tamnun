@@ -4,6 +4,7 @@
     c. insert menus (using django placeholders) INFO: Bootstrap's "card" class is currently selected for menu / bar place holders
     d. create functionality for search form
     e. create footer display of data
+    f. create JSON of front end data for backend to process
 
 2. Back end:
     a. Choose a way for handling sub - types of A/C
