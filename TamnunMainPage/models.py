@@ -65,6 +65,7 @@ class Item(models.Model):
     itemGroup = models.ForeignKey(ItemGroup, on_delete=models.CASCADE, null=True , blank=True)
     isFuelTank = models.BooleanField(name='isFuelTank')
     isExpendable = models.BooleanField(name='isExpendable')
+    priorityChecking = models.IntegerField(name = 'priorityChecking')
     # itemImage = models.ImageField(null = True) 
 
     def __str__(self):
