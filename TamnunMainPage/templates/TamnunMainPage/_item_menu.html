@@ -1,16 +1,10 @@
 <div class="card" id = "item_card">
     <div class="card-header">
-        {% if list_name %}
-        {{ list_name }}
-        {% else %}
         תפריט ללא כותרת
-        {% endif %}
     </div>
     <ul class="list-group" id = "item_list">
         {% if list_item %}
-        {% for item in list_items %}
         <button type="button" class="list-group-item"></button>
-        {% endfor %}
         {% else %}
         <li class="list-group-item active">אין פריטים לתצוגה</li>
         {% endif %}
