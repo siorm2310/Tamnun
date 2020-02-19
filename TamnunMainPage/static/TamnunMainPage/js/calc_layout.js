@@ -55,4 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Footer buttons
+
+    
 });
