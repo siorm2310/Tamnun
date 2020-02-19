@@ -1,6 +1,5 @@
 /TamnunProject/__pycache__/
 db.sqlite3
-TamnunMainPage/static/TamnunMainPage/
 *.pyc
 .vscode/
 /TamnunMainPage/migrations/
