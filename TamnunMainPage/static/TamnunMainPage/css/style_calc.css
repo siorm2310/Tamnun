@@ -10,3 +10,12 @@
 .btn {
     direction: rtl;
 }
+
+#logo {
+    /* size is relative to containing block */
+    width: 90%;
+    position: relative;
+    left: -350%;
+    top: -25%;
+}
+

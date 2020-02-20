@@ -22,6 +22,8 @@
   </div>
 </nav>
 
+<br>
+
 <div class="container-fluid text-center">
         <div class="row content">
             <div class="col-sm-2 sidenav">
@@ -39,12 +41,21 @@
         </div>
 </div>
 <hr>
+<br>
     <footer class="navbar" id="footer_calc">
-        <div class="btn-group-lg">
-            <button type="button" class="btn btn-info" id="list_items">פירוט תצורה נבחרת</button>
-            <button type="button" class="btn btn-outline-success" id="generatePDF">הפק דפית תצורה</button>
-            <img src="{% static 'TamnunMainPage/logo.jpg' %}" alt="A/C schematic" srcset="">
+      <div class="container">
+        <div class="row">
+          <div class="col-10">
+            <div class="btn-group-lg">
+              <button type="button" class="btn btn-info" id="list_items">פירוט תצורה נבחרת</button>
+              <button type="button" class="btn btn-outline-success" id="generatePDF">הפק דפית תצורה</button>
+            </div>
+          </div>
+          <div class="col-2">
+              <img src="{% static 'TamnunMainPage/Logo.png' %}" alt="A/C schematic" srcset="" id="logo">
+          </div>
         </div>
+      </div>
     </footer>
 
 {% endblock %}

@@ -9,9 +9,9 @@ const parsedJson = $.getJSON('http://127.0.0.1:8000/json', (json_response) => {
 
 // functionality
 function populateItemList(items_data) {
-  // Takes the relevant array derived from user selections and popuplates the RHS menu
-  // input - array of items
-  // output - none
+  /* Takes the relevant array derived from user selections and popuplates the RHS menu
+  input - array of items
+  output - none */
 
   if (items_data.length == 0) {
     // No items
@@ -56,5 +56,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Footer buttons
 
-    
+
 });
