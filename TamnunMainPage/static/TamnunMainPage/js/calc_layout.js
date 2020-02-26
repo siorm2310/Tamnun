@@ -1,4 +1,4 @@
-// Data Loading
+/* Data Loading */
 const items_data = ['A', 'B', 'C', 'D'] 
 // TODO: create http response from Djnago to mimic data sent
 
@@ -8,7 +8,7 @@ const parsedJson = $.getJSON('http://127.0.0.1:8000/json', (json_response) => {
     // TODO: make sure JSON response is from correct source in production
 });
 
-// functionality
+/* functionality */
 function populateItemList(items_data) {
   /* Takes the relevant array derived from user selections and popuplates the RHS menu
   input - array of items
@@ -50,7 +50,8 @@ function createJsonResponse(configs, tailNums) {
 
      return dataPacket;
 }
-// event listeners
+
+/* event listeners */
 document.addEventListener('DOMContentLoaded', () => {
 
     // Navbar buttons
@@ -77,5 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Footer buttons
 
+    document.getElementById('list_items').addEventListener('click', () => {
 
+    });
+
+    document.getElementById('generatePDF').addEventListener('click', () => {
+    });
+
+    // Calculate button 
+
+    document.getElementById('calculate').addEventListener('click', () => {
+    });
 });

@@ -1,10 +1,9 @@
 {
-    "items" : [
-        {
-            "itemA" : "A",
-            "itemB" : "B",
-            "itemC" : "C"
-
-        }
-    ]
+  "items": [
+    {
+      "itemA": "A",
+      "itemB": "B",
+      "itemC": "C"
+    }
+  ]
 }

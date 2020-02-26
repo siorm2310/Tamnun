@@ -54,22 +54,27 @@ class Item(models.Model):
     allocated according to TMS
     """
     # TODO: Decide resolution of A/C division
-    itemName = models.CharField(max_length=32, name='itemName')
-    hasLateralData = models.BooleanField(name='hasLateralData')
-    weight = models.FloatField(name='weight')
+    itemName = models.CharField(max_length=32, name='Item mame')
+    hasLateralData = models.BooleanField(name='Item has lateral data?')
+    weight = models.FloatField(name='Weight')
+    weight_delta = models.FloatField(name='weight delta', default=0, help_text="Does the item has weight derivative data?")
     x_cg = models.FloatField(name='x_cg')
     y_cg = models.FloatField(name='y_cg', blank=True)
     x_dim = models.FloatField(name='x_dim', default=10, help_text="Enter estimated dimentions relative to A/C in inch/cm. If not known, set to default") # X dimentions for the item
-    y_dim = models.FloatField(name='y_dim', default=10,  help_text="Enter estimated dimentions relative to A/C in inch/cm. If not known, set to default") # Y dimentions for the item
+    y_dim = models.FloatField(name='y_dim', default=10, help_text="Enter estimated dimentions relative to A/C in inch/cm. If not known, set to default") # Y dimentions for the item
     relatedAircraft = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
     itemGroup = models.ForeignKey(ItemGroup, on_delete=models.CASCADE, null=True , blank=True)
-    isFuelTank = models.BooleanField(name='isFuelTank')
-    isExpendable = models.BooleanField(name='isExpendable')
-    priorityChecking = models.IntegerField(name = 'priorityChecking')
-    # itemImage = models.ImageField(null = True) 
+    # itemImage = models.ImagLeField(null = True) 
 
     def __str__(self):
-        return f"ITEM : {self.itemName} ; WEIGHT = {self.weight} ; X-CG  = {self.x_cg} ; Y-CG = {self.y_cg}"
+        return f"ITEM : {self.itemName} ; A/C : {self.relatedAircraft}"
+
+class MunitionAndExternals(Item):
+    parentItem = models.ForeignKey('self', on_delete=models.CASCADE) # parent Item (chain of munition loading) is within MunitionAndExternals category
+    
+
+class FuelTank(Item):
+    pass
 
 class Aircraft(models.Model):
     """
@@ -96,7 +101,7 @@ class FuelFlow(models.Model):
     aircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
     relatedItem = models.ForeignKey(Item, on_delete=models.CASCADE , null=True , blank=True)
     isInternal = models.BooleanField()
-    fuelFlow = ArrayField(ArrayField(models.FloatField()))
+    fuelFlow = ArrayField(ArrayField(models.FloatField()), default=list)
  
     def __str__(self):
         return f"FUEL-FLOW. AIRCRAFT TYPE : {self.aircraftType} ; DESCRIPTION : {self.fuelFlowDescription}"
@@ -107,7 +112,7 @@ class Envelope(models.Model):
     Each Envelope holds the relevant aircraft type, as well as Longitudal/Lateral identifier.
     WARNING : as we use the ArrayField database field, we need to use postgreSQL database
     """
-    envelopeName = models.CharField(max_length=32 , help_text="Enter a short description for the envelope")
+    envelopeName = models.CharField(max_length=32 , help_text="Enter a short description for the envelope" , default = "")
     ENVELOPE_TYPE = (('LONG','Longitudal'),('LAT', 'Lateral')) # Restrict choices for envelope types
     aircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE , related_name='aircraftType')
     aircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE, null=True , blank=True)

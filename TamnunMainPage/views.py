@@ -8,12 +8,22 @@ def general_calc_tamnun(request):
     return render(request, 'TamnunMainPage/calc_layout.html')
 
 def dummy_data_serving(request):
-        return JsonResponse({"itemA" : "A"})
+        return JsonResponse({
+            "items": [
+                {
+                    "itemA": "A",
+                    "itemB": "B",
+                    "itemC": "C"
+                }
+            ]
+        }
+        )
 
 def recieve_frontend_data(request):
     # TODO: figure out a way to handle posting of JSON from the front end
     
     if request.method == 'POST':
+        print('got request')
         """TODO:
         1. Get the JSON
         2. Verify it is a JSON
