@@ -47,8 +47,8 @@
         <div class="row">
           <div class="col-10">
             <div class="btn-group-lg">
-              <button type="button" class="btn btn-info" id="list_items">פירוט תצורה נבחרת</button>
-              <button type="button" class="btn btn-outline-success" id="generatePDF">הפק דפית תצורה</button>
+              <button type="button" class="btn btn-info" id="list_items" data-toggle="modal" data-target="#itemListModal">פירוט תצורה נבחרת</button>
+              <button type="button" class="btn btn-outline-success" id="generatePDF" disabled>הפק דפית תצורה</button>
             </div>
           </div>
           <div class="col-2">
@@ -58,4 +58,24 @@
       </div>
     </footer>
 
+
+<!-- modal - selected item list -->
+<div class="modal fade" id="itemListModal" tabindex="-1" role="dialog" aria-labelledby="itemListModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="itemListModalLabel">רשימת פריטים נבחרים</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        הכנס כאן פריטים
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">סגור</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

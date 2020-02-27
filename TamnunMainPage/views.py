@@ -9,13 +9,19 @@ def general_calc_tamnun(request):
 
 def dummy_data_serving(request):
         return JsonResponse({
-            "items": [
-                {
-                    "itemA": "A",
-                    "itemB": "B",
-                    "itemC": "C"
-                }
-            ]
+            "items" : 
+            [{
+                "פריט 1" : "A",
+                "פריט 2" : "B",
+                "פריט 3" : "C"
+            }],
+
+            "tailNumbers" : 
+            [{
+                "315" : "A",
+                "654" : "B",
+                "342" : "C",
+            }],
         }
         )
 
@@ -24,11 +30,12 @@ def recieve_frontend_data(request):
     
     if request.method == 'POST':
         print('got request')
+        print(request.POST)
         """TODO:
         1. Get the JSON
         2. Verify it is a JSON
         3. retrieve list of derivatives from JSON
         4. pass the list to the calculation
         """
-        pass
+    return
         

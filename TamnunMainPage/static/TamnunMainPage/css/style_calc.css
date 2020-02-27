@@ -22,3 +22,8 @@
 #schematic {
     width: 80%;
 }
+
+.modal{
+    /* TODO: correct orientiation of modal */
+    direction: rtl;
+}
