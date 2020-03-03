@@ -29,7 +29,7 @@ def recieve_frontend_data(request):
     # TODO: figure out a way to handle posting of JSON from the front end
     
     if request.method == 'POST':
-        print('got request')
+        print('got a request')
         print(request.POST)
         """TODO:
         1. Get the JSON

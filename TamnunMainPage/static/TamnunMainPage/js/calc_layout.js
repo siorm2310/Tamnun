@@ -1,28 +1,29 @@
 /* Data Loading */
 const items_data = ['A', 'B', 'C', 'D'] 
-
+const dummyPostJSON = {"A" : "a"};
  /* Asyncronous events  */
-const dataReceived = $.getJSON('http://127.0.0.1:8000/json', (json_response) => {
-    // Asyncronous request - front-end always listening for incoming data
-    // const parsedJson = JSON.parse(json_response)  // const because it is a data packet from the server and should not be changed
-    // TODO: make sure JSON response is from correct source in production
-});
 
-fetch('http://127.0.0.1:8000/post' , {
-    /**
-     * Sends data to Django server for processing and W&B calcs
-     * INPUT - defined JSON object which includes all data refernces relevant for W&B calcs
-     * OUTPUT - none (posting action)
-     */
-    method : 'POST',
-    headers : {
-        'Content-Type' : 'application/json'
-    },
-    body : JSON.stringify(data)
-})
-    .then((response) => response.json())
-    .then((data) => {console.log('Successfully sent data')})
-    .catch((error) => {console.log('Error:', error)});
+let dataReceived;
+fetch('http://127.0.0.1:8000/json')
+    .then((response) => {return response.json();})
+    .then((data) => {dataReceived = data})
+    .catch((error) => {console.error('Error getting JSON data' , error)});
+
+// fetch('http://127.0.0.1:8000/post' , {
+//     /**
+//      * Sends data to Django server for processing and W&B calcs
+//      * INPUT - defined JSON object which includes all data refernces relevant for W&B calcs
+//      * OUTPUT - none (posting action)
+//      */
+//     method : 'POST',
+//     headers : {
+//         'Content-Type' : 'application/json'
+//     },
+//     body : JSON.stringify(dummyPostJSON)
+// })
+//     .then((response) => response.json())
+//     .then((dummyPostJSON) => {console.log('Successfully sent data')})
+//     .catch((error) => {console.log('Error:', error)});
 
 /* functionality */
 function populateItemList(items_data) {
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById("menu_headline").innerHTML = "מספרי זנב";
 
         try {
-            populateItemList(dataReceived.responseJSON['tailNumbers'][0]);   
+            populateItemList(dataReceived['tailNumbers'][0]);   
                
         } catch (error) {
             console.error(error);
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('items').addEventListener('click', () => {
         document.getElementById("menu_headline").innerHTML = "פריטי משימה";
         try {
-            populateItemList(dataReceived.responseJSON['items'][0]);   
+            populateItemList(dataReceived['items'][0]);   
                
         } catch (error) {
             console.error(error);
