@@ -1,10 +1,21 @@
 /* Data Loading */
 const items_data = ['A', 'B', 'C', 'D'] 
 const dummyPostJSON = {"A" : "a"};
+const dataz = [
+    {
+        x : 10 , 
+        y : 20
+    },
+    {
+        x : 20 , 
+        y : 30
+    }
+]
+
  /* Asyncronous events  */
 
 let dataReceived;
-fetch('http://127.0.0.1:8000/json')
+fetch('http://127.0.0.1:8000/json') // Get data from server as JSON and parse it into JS object
     .then((response) => {return response.json();})
     .then((data) => {dataReceived = data})
     .catch((error) => {console.error('Error getting JSON data' , error)});
@@ -132,4 +143,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('calculate').addEventListener('click', () => {
     });
+
+    let ctx = document.getElementById('fuelLimits');
+    let scatterChart = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+        datasets: [{
+            label: 'מעטפת משקל -מ.כ',
+            data: [{
+                x: -10,
+                y: 0
+            }, {
+                x: 0,
+                y: 10
+            }, {
+                x: 10,
+                y: 5
+            },{
+                x: -5,
+                y: 4
+            }
+        ],
+            pointBackgroundColor : 'rgba(255,0,0,1)'
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                type: 'linear',
+                position: 'bottom',
+
+            }
+        }
+    }
 });
+});
+
