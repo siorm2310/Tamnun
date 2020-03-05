@@ -5,7 +5,7 @@ from django.http import HttpResponse , JsonResponse, HttpRequest
 
 # Create your views here.
 def general_calc_tamnun(request):
-    return render(request, 'TamnunMainPage/calc_layout.html')
+    return render(request, 'TamnunMainPage/UAV.html')
 
 def dummy_data_serving(request):
         return JsonResponse({

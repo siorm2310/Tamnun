@@ -1,6 +1,11 @@
 {% extends 'TamnunMainPage/layout.html' %}
 {% load static %}
-{% block title %} Tamnun {% endblock %}
+{% block title %} UAV view {% endblock %}
+
+{% block static_files %}
+<link rel="stylesheet" href="{% static 'TamnunMainPage/css/UAV.css' %}">
+<script defer type = "text/javascript" src="{% static 'TamnunMainPage/js/UAV.js' %}"></script>
+{% endblock%}
 
 {% block body %}
 
