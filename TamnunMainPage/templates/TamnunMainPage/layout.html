@@ -11,7 +11,9 @@
     <script type = "text/javasctipt" src="{% static 'TamnunMainPage/js/sizzle/sizzle.min.js' %}"></script>
     <script type = "text/javascript" src="{% static 'TamnunMainPage/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
     <script type = "text/javascript" src="{% static 'TamnunMainPage/js/chartjs/Chart.bundle.min.js' %}"></script>
-
+    <script>
+        const csrftoken = '{{ csrf_token }}'
+    </script>
     <!-- our scripts  & Stylesheets-->
     {% block static_files %}
     {% endblock %}

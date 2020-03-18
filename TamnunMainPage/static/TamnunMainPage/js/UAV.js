@@ -11,7 +11,6 @@ const dataz = [
         y : 30
     }
 ]
-
  /* Asyncronous events  */
 
 let dataReceived;
@@ -20,21 +19,25 @@ fetch('http://127.0.0.1:8000/json') // Get data from server as JSON and parse it
     .then((data) => {dataReceived = data})
     .catch((error) => {console.error('Error getting JSON data' , error)});
 
-// fetch('http://127.0.0.1:8000/post' , {
-//     /**
-//      * Sends data to Django server for processing and W&B calcs
-//      * INPUT - defined JSON object which includes all data refernces relevant for W&B calcs
-//      * OUTPUT - none (posting action)
-//      */
-//     method : 'POST',
-//     headers : {
-//         'Content-Type' : 'application/json'
-//     },
-//     body : JSON.stringify(dummyPostJSON)
-// })
-//     .then((response) => response.json())
-//     .then((dummyPostJSON) => {console.log('Successfully sent data')})
-//     .catch((error) => {console.log('Error:', error)});
+fetch('http://127.0.0.1:8000/receiveJSON' , {
+    /**
+     * Sends data to Django server for processing and W&B calcs
+     * INPUT - defined JSON object which includes all data refernces relevant for W&B calcs
+     * OUTPUT - none (posting action)
+     */
+    method : 'POST',
+    headers : {
+        'Content-Type' : 'application/json',
+        'X-CSRFTOKEN' : csrftoken
+    },
+    body : JSON.stringify(dummyPostJSON),
+    credentials : 'include',
+    mode : 'same-origin'
+})
+    .then((response) => {response})
+    // .then(() => {console.log('Successfully sent data')})
+    .catch((error) => {console.log('Error:', error)});
+
 
 /* functionality */
 function populateItemList(items_data) {
@@ -142,6 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Calculate button 
 
     document.getElementById('calculate').addEventListener('click', () => {
+        // TODO: bundle selections together into a JSON
+        // TODO: Stringify JSON
+        // TODO: Send to server (Asynchronously)
+        let button = document.getElementById("calculate");
+        document.getElementById("calculate").innerHTML =('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> מחשב...');
+        button.setAttribute('disabled', '')
     });
 
     let ctx = document.getElementById('fuelLimits');

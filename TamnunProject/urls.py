@@ -19,5 +19,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('TamnunMainPage.urls')),
-    path('json/', include('TamnunMainPage.urls')) # Dummy data serving. delete in production
+    path('json/', include('TamnunMainPage.urls')), # Dummy data serving. delete in production
+    path('receiveJSON/', include('TamnunMainPage.urls')) # Dummy data serving. delete in production
 ]
