@@ -1,16 +1,8 @@
 /* Data Loading */
-const items_data = ['A', 'B', 'C', 'D'] 
-const dummyPostJSON = {"A" : "a"};
-const dataz = [
-    {
-        x : 10 , 
-        y : 20
-    },
-    {
-        x : 20 , 
-        y : 30
-    }
-]
+jsonz = {
+    A : "a",
+    B : "b"
+}
  /* Asyncronous events  */
 
 let dataReceived;
@@ -18,26 +10,6 @@ fetch('http://127.0.0.1:8000/json') // Get data from server as JSON and parse it
     .then((response) => {return response.json();})
     .then((data) => {dataReceived = data})
     .catch((error) => {console.error('Error getting JSON data' , error)});
-
-fetch('http://127.0.0.1:8000/receiveJSON' , {
-    /**
-     * Sends data to Django server for processing and W&B calcs
-     * INPUT - defined JSON object which includes all data refernces relevant for W&B calcs
-     * OUTPUT - none (posting action)
-     */
-    method : 'POST',
-    headers : {
-        'Content-Type' : 'application/json',
-        'X-CSRFTOKEN' : csrftoken
-    },
-    body : JSON.stringify(dummyPostJSON),
-    credentials : 'include',
-    mode : 'same-origin'
-})
-    .then((response) => {response})
-    // .then(() => {console.log('Successfully sent data')})
-    .catch((error) => {console.log('Error:', error)});
-
 
 /* functionality */
 function populateItemList(items_data) {
@@ -97,6 +69,26 @@ function populateLimitaions(fuelLimitaions, chartData) {
    *  */  
 };
 
+
+async function sendCalculationAndGetSolution(targetJson) {
+    console.log("Creating data bundle");
+    // createJsonResponse() TODO: edit this function
+    console.log("Sending data");
+    const response = await fetch('http://127.0.0.1:8000/receiveJSON',{
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json',
+            'X-CSRFTOKEN' : csrftoken
+        },
+        body : JSON.stringify(targetJson),
+        credentials : 'include',
+        mode : 'same-origin'
+    })
+    .then((response) => response.json())
+    // .then(console.log("Data sent successfully"))
+    return await response
+}
+
 /* event listeners */
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -149,8 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // TODO: Stringify JSON
         // TODO: Send to server (Asynchronously)
         let button = document.getElementById("calculate");
-        document.getElementById("calculate").innerHTML =('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> מחשב...');
-        button.setAttribute('disabled', '')
+        button.innerHTML =('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> מחשב...');
+        button.disabled = true;
+        sendCalculationAndGetSolution(jsonz)
+            .then((answer)=>{console.log(answer);});
+        
+        // TODO: wait for response
+        button.innerHTML = ("חשב!")
+        button.disabled = false;
     });
 
     let ctx = document.getElementById('fuelLimits');
@@ -187,4 +185,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 });
-

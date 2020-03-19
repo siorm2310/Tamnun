@@ -1,12 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse , JsonResponse, HttpRequest
-import json
+import json, time
 from .dummyData import dummyDataFile
 
 # Create your views here.
 def general_calc_tamnun(request, methods = ['POST', 'GET']):
-    if request.method == 'POST':
-        print('got request')
     return render(request, 'TamnunMainPage/UAV.html')
 
 def dummy_data_serving(request):
@@ -30,12 +28,14 @@ def dummy_data_serving(request):
 def recieve_frontend_data(request):  
     if request.method == 'POST':
         print('got a request')
-        print(json.loads(request.body))
+        # print(json.loads(request.body))
+        time.sleep(2)
+        print('done sleeping')
         """TODO:
         1. Get the JSON
         2. Verify it is a JSON
         3. retrieve list of derivatives from JSON
         4. pass the list to the calculation
         """
-    return JsonResponse(dummyDataFile.server_response)
+        return JsonResponse({"shloops" : "gloops"})
         
