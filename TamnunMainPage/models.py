@@ -5,7 +5,7 @@ from django.contrib.postgres.fields import ArrayField,JSONField # Postgres speci
 
 # TODO: Validate that all required parameters have been passed
 # TODO: Choose a way for handling images and files (other than static files)
-# TODO: Choose a way for handling sub - types of A/C
+# TODO: create functionality for delivering data to front end
 
 class AircraftType(models.Model):
     """

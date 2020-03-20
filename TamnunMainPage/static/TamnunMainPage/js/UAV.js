@@ -5,12 +5,6 @@ jsonz = {
 }
  /* Asyncronous events  */
 
-let dataReceived;
-fetch('http://127.0.0.1:8000/json') // Get data from server as JSON and parse it into JS object
-    .then((response) => {return response.json();})
-    .then((data) => {dataReceived = data})
-    .catch((error) => {console.error('Error getting JSON data' , error)});
-
 /* functionality */
 function populateItemList(items_data) {
   /* Takes the relevant array derived from user selections and popuplates the RHS menu
@@ -58,7 +52,7 @@ function createJsonResponse(configs, tailNums) {
      return dataPacket;
 }
 
-function populateLimitaions(fuelLimitaions, chartData) {
+function populateLimitaions(serverSolution) {
   /**
    * takes the calculation output from the server and displays it in the left side menu
    * INPUT
@@ -68,7 +62,6 @@ function populateLimitaions(fuelLimitaions, chartData) {
    * none
    *  */  
 };
-
 
 async function sendCalculationAndGetSolution(targetJson) {
     console.log("Creating data bundle");
@@ -138,17 +131,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('calculate').addEventListener('click', () => {
         // TODO: bundle selections together into a JSON
-        // TODO: Stringify JSON
-        // TODO: Send to server (Asynchronously)
         let button = document.getElementById("calculate");
         button.innerHTML =('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> מחשב...');
         button.disabled = true;
         sendCalculationAndGetSolution(jsonz)
-            .then((answer)=>{console.log(answer);});
-        
-        // TODO: wait for response
-        button.innerHTML = ("חשב!")
-        button.disabled = false;
+            .then((answer) => {
+                populateLimitaions(answer);
+                button.innerHTML = ("חשב!");
+                button.disabled = false;
+            });
+    
     });
 
     let ctx = document.getElementById('fuelLimits');

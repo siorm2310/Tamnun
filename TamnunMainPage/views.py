@@ -1,10 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse , JsonResponse, HttpRequest
 import json, time
-from .dummyData import dummyDataFile
 
 # Create your views here.
 def general_calc_tamnun(request, methods = ['POST', 'GET']):
+    """
+    TODO:
+    1. get data relevant to the user from the data base
+    2. arrange data to be delivered to the template
+    3. render template with the data
+    """
     return render(request, 'TamnunMainPage/UAV.html')
 
 def dummy_data_serving(request):
