@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField,JSONField # Postgres specific fields
-
+from django.core.validators import RegexValidator
 # Models file. contains the models for the Tamnun application. migrate these models to update the database
 
 # TODO: Validate that all required parameters have been passed
@@ -14,11 +14,11 @@ class AircraftType(models.Model):
     """
     RLE = models.FloatField(name='RLE')
     MAC = models.FloatField(name='MAC',null=True , blank=True)
-    TMS = models.CharField(max_length = 8, name = 'TMS', unique = True , help_text  = "Use the following format : XX-XX-XX") # AA-BB-CC format
+    TMS = models.CharField(max_length = 8, name = 'TMS', unique = True, 
+    help_text  = "Use the following format : XX-XX-XX",validators = [RegexValidator(r"^\d{2}-\d{2}-\d{2}$", )]) # AA-BB-CC format
     IAFname = models.CharField(max_length=32, name='IAFname' , help_text = "Hebrew name, e.g : Zik, Adir")
     modelName = models.CharField(max_length=32, name='modelName', help_text = "Commertial name, e.g : F-16, CH-53")
     # aircraftImage = models.ImageField(null = True)
-
 
     def __str__(self):
         return f"AIRCRAFT : {self.IAFname} ({self.modelName}) ; TMS : {self.TMS}"
@@ -84,7 +84,7 @@ class Aircraft(models.Model):
     basicWeight = models.FloatField(name='basicWeight')
     basicXCG = models.FloatField(name='basicXCG')
     basicYCG = models.FloatField(name='basicYCG')
-    aircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedAircraft = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
     aircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE , null=True)
 
     def __str__(self):
@@ -118,5 +118,6 @@ class Envelope(models.Model):
     aircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE, null=True , blank=True)
     envelopeType = models.CharField(max_length=4, choices=ENVELOPE_TYPE, default='LONG')
     Envelope = ArrayField(ArrayField(models.FloatField()))
+
     def __str__(self):
         return f"ENVELOPE. AIRCRAFT TYPE : {self.aircraftType} ; TYPE : {self.envelopeType}"
