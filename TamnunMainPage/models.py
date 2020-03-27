@@ -62,12 +62,12 @@ class Item(models.Model):
     y_cg = models.FloatField(name='y_cg', blank=True)
     x_dim = models.FloatField(name='x_dim', default=10, help_text="Enter estimated dimentions relative to A/C in inch/cm. If not known, set to default") # X dimentions for the item
     y_dim = models.FloatField(name='y_dim', default=10, help_text="Enter estimated dimentions relative to A/C in inch/cm. If not known, set to default") # Y dimentions for the item
-    relatedAircraft = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedAircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
     itemGroup = models.ForeignKey(ItemGroup, on_delete=models.CASCADE, null=True , blank=True)
     # itemImage = models.ImagLeField(null = True) 
 
     def __str__(self):
-        return f"ITEM : {self.itemName} ; A/C : {self.relatedAircraft}"
+        return f"ITEM : {self.itemName} ; A/C : {self.relatedAircraftType}"
 
 class MunitionAndExternals(Item):
     parentItem = models.ForeignKey('self', on_delete=models.CASCADE) # parent Item (chain of munition loading) is within MunitionAndExternals category
@@ -84,11 +84,11 @@ class Aircraft(models.Model):
     basicWeight = models.FloatField(name='basicWeight')
     basicXCG = models.FloatField(name='basicXCG')
     basicYCG = models.FloatField(name='basicYCG')
-    relatedAircraft = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedAircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
     aircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE , null=True)
 
     def __str__(self):
-        return f"TAIL NUMBER : {self.tailNumber} TYPE : {self.aircraftType} SUB_TYPE : {self.aircraftSubType}"
+        return f"TAIL NUMBER : {self.tailNumber} TYPE : {self.relatedAircraftType} SUB_TYPE : {self.aircraftSubType}"
 
 class FuelFlow(models.Model):
     """
@@ -98,13 +98,13 @@ class FuelFlow(models.Model):
     WARNING : as we use the ArrayField database field, we need to use postgreSQL database
     """
     fuelFlowDescription = models.CharField(max_length = 32, name = 'fuelDescription',  help_text="Enter a short description for the fuel flow")
-    aircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedAircraft = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
     relatedItem = models.ForeignKey(Item, on_delete=models.CASCADE , null=True , blank=True)
     isInternal = models.BooleanField()
     fuelFlow = ArrayField(ArrayField(models.FloatField()), default=list)
  
     def __str__(self):
-        return f"FUEL-FLOW. AIRCRAFT TYPE : {self.aircraftType} ; DESCRIPTION : {self.fuelFlowDescription}"
+        return f"FUEL-FLOW. AIRCRAFT TYPE : {self.relatedAircraft} ; DESCRIPTION : {self.fuelFlowDescription}"
 
 class Envelope(models.Model):
     """
@@ -114,10 +114,10 @@ class Envelope(models.Model):
     """
     envelopeName = models.CharField(max_length=32 , help_text="Enter a short description for the envelope" , default = "")
     ENVELOPE_TYPE = (('LONG','Longitudal'),('LAT', 'Lateral')) # Restrict choices for envelope types
-    aircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE , related_name='aircraftType')
+    relatedAircraft = models.ForeignKey(AircraftType, on_delete=models.CASCADE , related_name='aircraftType')
     aircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE, null=True , blank=True)
     envelopeType = models.CharField(max_length=4, choices=ENVELOPE_TYPE, default='LONG')
     Envelope = ArrayField(ArrayField(models.FloatField()))
 
     def __str__(self):
-        return f"ENVELOPE. AIRCRAFT TYPE : {self.aircraftType} ; TYPE : {self.envelopeType}"
+        return f"ENVELOPE. AIRCRAFT TYPE : {self.relatedAircraft} ; TYPE : {self.envelopeType}"

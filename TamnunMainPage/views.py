@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse , JsonResponse, HttpRequest
 import json, time
+from .models import *
 
 # Create your views here.
 def general_calc_tamnun(request, methods = ['POST', 'GET']):
@@ -10,7 +11,28 @@ def general_calc_tamnun(request, methods = ['POST', 'GET']):
     2. arrange data to be delivered to the template
     3. render template with the data
     """
+
     return render(request, 'TamnunMainPage/UAV.html')
+
+def display_main_page(request, chosen_aircraft_tms):
+    try:
+        aircraftType = AircraftType.objects.get(TMS = chosen_aircraft_tms)
+        aircrafts = Aircraft.objects.filter(aircraftType = aircraftType)
+        items = Item.objects.filter(relatedAircraft = aircraftType)
+        fuelFlows = FuelFlow.objects.filter(aircraftType = aircraftType)
+        envelopes = Envelope.objects.filter(aircraftType = aircraftType)
+
+    except expression as identifier:
+        pass
+
+    delivery_data = {
+        "aircraftType" : aircraftType,
+        "aircrafts" : aircrafts,
+        "items" : items,
+        "fuelFlows" : fuelFlows,
+        "envelopes" : envelopes
+    }
+    return render(request, delivery_data)
 
 def dummy_data_serving(request):
         return JsonResponse({
@@ -43,4 +65,9 @@ def recieve_frontend_data(request):
         4. pass the list to the calculation
         """
         return JsonResponse({"shloops" : "gloops"})
-        
+
+# def process_calculation_requests(request):
+#     if request.method == 'POST':
+#         selections = request.body
+#         solutions = calculate_WB_limits(selections)
+#     return(solution)
