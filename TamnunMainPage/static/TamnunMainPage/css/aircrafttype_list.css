@@ -1,0 +1,17 @@
+.container{
+    direction: rtl;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.card{
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+#page_title{
+    text-align: center;
+}

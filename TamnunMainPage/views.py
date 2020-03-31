@@ -1,9 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect, reverse
 from django.http import HttpResponse , JsonResponse, HttpRequest
+from django.views.generic import ListView
 import json, time
 from .models import *
+from .queries import ViewQueries
 
 # Create your views here.
+class PlatformSelectionView(ListView):
+    model = AircraftType
+
 def general_calc_tamnun(request, methods = ['POST', 'GET']):
     """
     TODO:
@@ -14,25 +19,9 @@ def general_calc_tamnun(request, methods = ['POST', 'GET']):
 
     return render(request, 'TamnunMainPage/UAV.html')
 
-def display_main_page(request, chosen_aircraft_tms):
-    try:
-        aircraftType = AircraftType.objects.get(TMS = chosen_aircraft_tms)
-        aircrafts = Aircraft.objects.filter(aircraftType = aircraftType)
-        items = Item.objects.filter(relatedAircraft = aircraftType)
-        fuelFlows = FuelFlow.objects.filter(aircraftType = aircraftType)
-        envelopes = Envelope.objects.filter(aircraftType = aircraftType)
-
-    except expression as identifier:
-        pass
-
-    delivery_data = {
-        "aircraftType" : aircraftType,
-        "aircrafts" : aircrafts,
-        "items" : items,
-        "fuelFlows" : fuelFlows,
-        "envelopes" : envelopes
-    }
-    return render(request, delivery_data)
+def display_main_page(request):
+    data = ViewQueries.get_frontend_data(tms="11-11-11")
+    return JsonResponse(data)
 
 def dummy_data_serving(request):
         return JsonResponse({

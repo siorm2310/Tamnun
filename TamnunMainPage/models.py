@@ -29,7 +29,7 @@ class AircraftSubType(models.Model):
     It describes differeces in the platform which are NOT seperated in TMS level.
     Examples of sub types : Zik TVUAA / DAF PLADA , EITAN MANA A / MANA B , YANSHUF 1/2/3
     """
-    aircraftType = models.ForeignKey(AircraftType , on_delete=models.CASCADE)
+    relatedAircraftType = models.ForeignKey(AircraftType , on_delete=models.CASCADE)
     subTypeName = models.CharField(max_length=32)
 
     def __str__(self):
@@ -85,7 +85,7 @@ class Aircraft(models.Model):
     basicXCG = models.FloatField(name='basicXCG')
     basicYCG = models.FloatField(name='basicYCG')
     relatedAircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
-    aircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE , null=True)
+    relatedAircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE , null=True)
 
     def __str__(self):
         return f"TAIL NUMBER : {self.tailNumber} TYPE : {self.relatedAircraftType} SUB_TYPE : {self.aircraftSubType}"
@@ -98,7 +98,7 @@ class FuelFlow(models.Model):
     WARNING : as we use the ArrayField database field, we need to use postgreSQL database
     """
     fuelFlowDescription = models.CharField(max_length = 32, name = 'fuelDescription',  help_text="Enter a short description for the fuel flow")
-    relatedAircraft = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedAircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
     relatedItem = models.ForeignKey(Item, on_delete=models.CASCADE , null=True , blank=True)
     isInternal = models.BooleanField()
     fuelFlow = ArrayField(ArrayField(models.FloatField()), default=list)
@@ -114,10 +114,10 @@ class Envelope(models.Model):
     """
     envelopeName = models.CharField(max_length=32 , help_text="Enter a short description for the envelope" , default = "")
     ENVELOPE_TYPE = (('LONG','Longitudal'),('LAT', 'Lateral')) # Restrict choices for envelope types
-    relatedAircraft = models.ForeignKey(AircraftType, on_delete=models.CASCADE , related_name='aircraftType')
-    aircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE, null=True , blank=True)
+    relatedAircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE , related_name='aircraftType')
+    relatedAircraftSubType = models.ForeignKey(AircraftSubType, on_delete=models.CASCADE, null=True , blank=True)
     envelopeType = models.CharField(max_length=4, choices=ENVELOPE_TYPE, default='LONG')
     Envelope = ArrayField(ArrayField(models.FloatField()))
 
     def __str__(self):
-        return f"ENVELOPE. AIRCRAFT TYPE : {self.relatedAircraft} ; TYPE : {self.envelopeType}"
+        return f"ENVELOPE. AIRCRAFT TYPE : {self.relatedAircraftType} ; TYPE : {self.envelopeType}"

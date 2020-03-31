@@ -1,0 +1,23 @@
+{% extends 'TamnunMainPage/layout.html' %}
+{% load static %}
+
+{% block static_files %}
+<link rel="stylesheet" href="{% static 'TamnunMainPage/css/aircrafttype_list.css' %}">
+{% endblock %}
+
+{% block body %}
+<h2 id="page_title">
+    בחר פלטפורמה
+</h2>
+<div class="container">
+    {% for aircraft_type in object_list %}
+    <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ aircraft_type.IAFname }}</h5>
+          <a href="#" class="btn btn-primary">בחר</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
