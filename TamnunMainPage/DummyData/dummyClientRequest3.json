@@ -1,0 +1,65 @@
+{
+    "name" : "DummyConfig2",
+    "platform" : "C-187",
+    "aircrafts" : [
+        {"Tail_num" : ["022", "505", "232", "999"]},
+        {"Weight" : ["135020", "135509", "133982", "136010"]},
+        {"CG" : ["420.55","421.00","420.95","420.10"]}
+    ],
+    "items" : [
+        "Pilot",
+        "Co-Pilot",
+        "Flight-mechanic",
+        "Supplies",
+        "Jeep",
+        "Combat-unit"
+    ],
+    "father": [
+        "Pilot",
+        "Co-Pilot",
+        "Flight-mechanic",
+        "Supplies",
+        "Jeep",
+        "Combat-unit" 
+    ],
+    "derivative" : [
+        false,
+        false,
+        false,
+        true,
+        false,
+        true
+    ],
+    "weight":[
+        100,
+        100,
+        100,
+        600,
+        1000,
+        1500
+    ],
+    "weight_delta":[
+        100,
+        100,
+        100,
+        400,
+        2000,
+        1500
+    ],
+    "cg":[
+        30,
+        40,
+        30,
+        300,
+        500,
+        30
+    ],
+    "cg_d":[
+        0,
+        0,
+        1000,
+        100,
+        300,
+        1000
+    ]
+}

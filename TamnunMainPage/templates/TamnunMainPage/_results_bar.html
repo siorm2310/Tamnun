@@ -1,43 +1,29 @@
 <div class="card">
-<table class="table table-bordered">
+  <table class="table table-bordered">
     <tbody>
-        <tr>
-            <th scope = "row">דלק להמראה</th>
-            <td>
-                {% if fuel_limits.takeoff %}
-                {{ fuel_limits.takeoff }}
-                {% else %}
-                -
-                {%endif%}
-            </td>
-            <td>
-                {% if units %}
-                {{units}}
-                {% else %}
-                -
-                {%endif%}
-            </td>
-            </tr>
-        <tr>
-            <th scope="row">דלק לנחיתה</th>
-            <td>
-                {% if fuel_limits.takeoff %}
-                {{ fuel_limits.takeoff }}
-                {% else %}
-                -
-                {%endif%}
-            </td>
-            <td>
-                {% if units %}
-                {{ units }}
-                {% else %}
-                -
-                {%endif%}
-            </td>
-        </tr>
+      <tr>
+        <th scope="row">דלק להמראה</th>
+        <td id="takeoff_fuel">
+          {% if fuel_limits.takeoff %} {{ fuel_limits.takeoff }} {% else %} -
+          {%endif%}
+        </td>
+        <td class="units">
+          {% if units %} {{units}} {% else %} - {%endif%}
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">דלק לנחיתה</th>
+        <td id="landing_fuel">
+          {% if fuel_limits.takeoff %} {{ fuel_limits.takeoff }} {% else %} -
+          {%endif%}
+        </td>
+        <td class="units">
+          {% if units %} {{ units }} {% else %} - {%endif%}
+        </td>
+      </tr>
     </tbody>
-</table>
+  </table>
 </div>
 <div class="card">
-        <canvas id="fuelLimits"></canvas>
+  <canvas id="fuelLimits"></canvas>
 </div>

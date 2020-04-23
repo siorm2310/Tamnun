@@ -21,7 +21,8 @@ def general_calc_tamnun(request, methods = ['POST', 'GET']):
 
 def display_main_page(request):
     data = ViewQueries.get_frontend_data(tms="11-11-11")
-    return JsonResponse(data)
+    
+    return render(request, 'TamnunMainPage/UAV.html')
 
 def dummy_data_serving(request):
         return JsonResponse({
