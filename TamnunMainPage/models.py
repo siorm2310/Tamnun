@@ -76,7 +76,6 @@ class Item(models.Model):
     """
 
     itemName = models.CharField(max_length=32)
-    hasLateralData = models.BooleanField(name="Item has lateral data?")
     weight = models.FloatField(name="Weight")
     weight_delta = models.FloatField(
         name="weight delta",
