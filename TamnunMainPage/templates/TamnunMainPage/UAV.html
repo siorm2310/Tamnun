@@ -3,6 +3,9 @@
 {% block title %} UAV view {% endblock %}
 
 {% block static_files %}
+{{ aircraftType|json_script:"aircraftType" }}
+{{ aircrafts|json_script:"aircrafts" }}
+{{ items|json_script:"items" }}
 <link rel="stylesheet" href="{% static 'TamnunMainPage/css/UAV.css' %}">
 <script defer type = "text/javascript" src="{% static 'TamnunMainPage/js/UAV.js' %}"></script>
 {% endblock %}

@@ -1,4 +1,9 @@
 /* Data Loading */
+const aircraftType = JSON.parse(
+  document.getElementById("aircraftType").textContent
+);
+const aircrafts = JSON.parse(document.getElementById("aircrafts").textContent);
+const items = JSON.parse(document.getElementById("items").textContent);
 jsonz = {
   A: "a",
   B: "b",
@@ -114,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("envelopes").addEventListener("click", () => {
-    document.getElementById("menu_headline").innerHclsTML = "מעטפות";
+    document.getElementById("menu_headline").innerHTML = "מעטפות";
   });
 
   document.getElementById("items").addEventListener("click", () => {
