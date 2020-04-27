@@ -3,11 +3,8 @@ const aircraftType = JSON.parse(
   document.getElementById("aircraftType").textContent
 );
 const aircrafts = JSON.parse(document.getElementById("aircrafts").textContent);
-const items = JSON.parse(document.getElementById("items").textContent);
-jsonz = {
-  A: "a",
-  B: "b",
-};
+const ACitems = JSON.parse(document.getElementById("JsonACitems").textContent);
+jsonz = { A: "a", B: "b" };
 /* Asyncronous events  */
 
 /* functionality */
@@ -33,6 +30,22 @@ function populateItemList(items_data) {
     }
   }
   return;
+}
+
+function populateRightMenu(data, displayData, dataName) {
+  const menuList = document.getElementById("item_list");
+  menuList.innerHTML = null; // clear existing data
+
+  if (data === []) {
+    menuList.innerHTML = '<li class="list-item">אין פריטים להצגה</li>';
+    return;
+  }
+
+  for (let el of data) {
+    const template = `<button type="button" data-id = ${el["id"]} 
+    class="list-group-item list-group-item-action ${dataName}">${el[displayData]}</button>`;
+    menuList.innerHTML += template;
+  }
 }
 
 function deriveWeightAndBalanceData(serverData, desiredData) {
@@ -109,37 +122,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // Navbar buttons
   document.getElementById("tail_number").addEventListener("click", () => {
     document.getElementById("menu_headline").innerHTML = "מספרי זנב";
-
-    try {
-      populateItemList(dataReceived["tailNumbers"][0]);
-    } catch (error) {
-      console.error(error);
-      populateItemList({});
-    }
-  });
-
-  document.getElementById("envelopes").addEventListener("click", () => {
-    document.getElementById("menu_headline").innerHTML = "מעטפות";
+    populateRightMenu(aircrafts, "tailNumber", "aircraft");
   });
 
   document.getElementById("items").addEventListener("click", () => {
     document.getElementById("menu_headline").innerHTML = "פריטי משימה";
-    try {
-      populateItemList(dataReceived["items"][0]);
-    } catch (error) {
-      console.error(error);
-      populateItemList({});
-    }
-  });
-
-  document.getElementById("fuelflow").addEventListener("click", () => {
-    document.getElementById("menu_headline").innerHTML = "מהלכי דלק";
+    populateRightMenu(ACitems, "itemName", "ACitems");
   });
 
   document.getElementById("presets").addEventListener("click", () => {
     document.getElementById("menu_headline").innerHTML = "פריסטים";
   });
 
+  // Right menu buttons
+  document.querySelectorAll(".aircraft").forEach((btn) => {});
   // Footer buttons
 
   document.getElementById("generatePDF").addEventListener("click", () => {});

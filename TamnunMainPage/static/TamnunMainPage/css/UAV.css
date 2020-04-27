@@ -1,33 +1,30 @@
-.navbar{
-    direction: rtl;
+.navbar {
+  direction: rtl;
 }
 
-#footer_calc{
-    justify-content: center;
-    direction: rtl;
+#footer_calc > * {
+  justify-content: center;
+  direction: rtl;
 }
 
 .btn {
-    direction: rtl;
+  direction: rtl;
 }
 
 #logo {
-    /* size is relative to containing block */
-    width: 90%;
-    position: sticky;
-    left: -350%;
-    top: -25%;
+  /* size is relative to containing block */
+  width: 5rem;
 }
 
 #schematic {
-    width: 70%;
+  width: 70%;
 }
 
-.modal{
-    /* TODO: correct orientiation of modal */
-    direction: rtl;
+.modal {
+  /* TODO: correct orientiation of modal */
+  direction: rtl;
 }
 
-.table{
-    direction: rtl;
+.table {
+  direction: rtl;
 }

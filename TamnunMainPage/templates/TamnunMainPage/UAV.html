@@ -5,7 +5,7 @@
 {% block static_files %}
 {{ aircraftType|json_script:"aircraftType" }}
 {{ aircrafts|json_script:"aircrafts" }}
-{{ items|json_script:"items" }}
+{{ items|json_script:"JsonACitems" }}
 <link rel="stylesheet" href="{% static 'TamnunMainPage/css/UAV.css' %}">
 <script defer type = "text/javascript" src="{% static 'TamnunMainPage/js/UAV.js' %}"></script>
 {% endblock %}
@@ -14,13 +14,13 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
   <div class="container-fluid">
+    <img src="{% static 'TamnunMainPage/Logo.png' %}" alt="logo" srcset="" id="logo">
     <div class="btn-group-lg">
         <button type="button" class="btn btn-primary" id="tail_number">מספרי זנב</button>
-        <button type="button" class="btn btn-primary" id="envelopes">מעטפות</button>
         <button type="button" class="btn btn-primary" id="items">פריטי משימה</button>
-        <button type="button" class="btn btn-primary" id="fuelflow">מהלך דלק</button>
-        <button type="button" class="btn btn-primary" id="presets">פריסטים</button>
+        <button type="button" class="btn btn-primary" id="presets" disabled>פריסטים</button>
     </div>
+
     <form class="form-inline" action="" method="post">
       <div class="form-group">
         <input type="text" class="form-control" placeholder="חפש">
@@ -51,16 +51,13 @@
 <hr>
 <br>
     <footer class="navbar" id="footer_calc">
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
-          <div class="col-10">
+          <div class="col">
             <div class="btn-group-lg">
               <button type="button" class="btn btn-info" id="list_items" data-toggle="modal" data-target="#itemListModal">פירוט תצורה נבחרת</button>
               <button type="button" class="btn btn-outline-success" id="generatePDF" disabled>הפק דפית תצורה</button>
             </div>
-          </div>
-          <div class="col-2">
-              <img src="{% static 'TamnunMainPage/Logo.png' %}" alt="A/C schematic" srcset="" id="logo">
           </div>
         </div>
       </div>
