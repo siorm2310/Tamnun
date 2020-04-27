@@ -8,29 +8,6 @@ jsonz = { A: "a", B: "b" };
 /* Asyncronous events  */
 
 /* functionality */
-function populateItemList(items_data) {
-  /* Takes the relevant array derived from user selections and popuplates the RHS menu
-  input - dictionary of items
-  output - none */
-
-  const menuList = document.getElementById("item_list");
-  menuList.innerHTML = null; // clear existing data
-
-  // TODO:Can be refactored
-  if (jQuery.isEmptyObject(items_data)) {
-    // No items
-    menuList.innerHTML = "אין פריטים להצגה";
-  } else {
-    for (var key in items_data) {
-      let item = document.createElement("button");
-      item.setAttribute("class", "list-group-item");
-      item.setAttribute("type", "button");
-      item.innerHTML = key; // display the name of the item and not the content(the data itself)
-      menuList.appendChild(item);
-    }
-  }
-  return;
-}
 
 function populateRightMenu(data, displayData, dataName) {
   const menuList = document.getElementById("item_list");
