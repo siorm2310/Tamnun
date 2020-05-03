@@ -25,6 +25,12 @@ function populateRightMenu(data, displayData, dataName) {
   }
 }
 
+function getDataById(dataId, targetJson) {
+  const extractedObject = targetJson.filter((obj) => {
+    return obj.dataId;
+  });
+  return extractedObject;
+}
 function deriveWeightAndBalanceData(serverData, desiredData) {
   /*
     Takes the JSON packet from the server and extracts the Weight and Balance data relevant to the specific request
@@ -100,19 +106,24 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("tail_number").addEventListener("click", () => {
     document.getElementById("menu_headline").innerHTML = "מספרי זנב";
     populateRightMenu(aircrafts, "tailNumber", "aircraft");
-  });
 
-  document.getElementById("items").addEventListener("click", () => {
-    document.getElementById("menu_headline").innerHTML = "פריטי משימה";
-    populateRightMenu(ACitems, "itemName", "ACitems");
-  });
+    document.querySelectorAll(".aircraft").forEach((btn) => {
+      btn.addEventListener("click", () => {});
+    });
 
-  document.getElementById("presets").addEventListener("click", () => {
-    document.getElementById("menu_headline").innerHTML = "פריסטים";
-  });
+    document.getElementById("items").addEventListener("click", () => {
+      document.getElementById("menu_headline").innerHTML = "פריטי משימה";
+      populateRightMenu(ACitems, "itemName", "ACitems");
 
-  // Right menu buttons
-  document.querySelectorAll(".aircraft").forEach((btn) => {});
+      document.querySelectorAll(".ACitemsן").forEach((btn) => {
+        btn.addEventListener("click", () => {});
+      });
+    });
+
+    document.getElementById("presets").addEventListener("click", () => {
+      document.getElementById("menu_headline").innerHTML = "פריסטים";
+    });
+  });
   // Footer buttons
 
   document.getElementById("generatePDF").addEventListener("click", () => {});
