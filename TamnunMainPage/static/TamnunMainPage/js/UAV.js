@@ -1,14 +1,14 @@
-/* Data Loading */
-const aircraftType = JSON.parse(
-  document.getElementById("aircraftType").textContent
-);
-const aircrafts = JSON.parse(document.getElementById("aircrafts").textContent);
-const ACitems = JSON.parse(document.getElementById("JsonACitems").textContent);
 jsonz = { A: "a", B: "b" };
 /* Asyncronous events  */
 
 /* functionality */
 
+/**
+ * Displays buttons of selected type in RHS menu
+ * @param {JSON} data - Json data revieved from backend
+ * @param {string} displayData - Name of the item to be displayed in button
+ * @param {string} dataName - class name to be added to button (identical to "data" name)
+ */
 function populateRightMenu(data, displayData, dataName) {
   const menuList = document.getElementById("item_list");
   menuList.innerHTML = null; // clear existing data
@@ -25,20 +25,14 @@ function populateRightMenu(data, displayData, dataName) {
   }
 }
 
-function getDataById(dataId, targetJson) {
-  const extractedObject = targetJson.filter((obj) => {
-    return obj.dataId;
-  });
-  return extractedObject;
+function createItemDiscMenu(itemId, jsonKey) {
+  let itemDiscMenu = document.getElementById("item_disc");
+  itemDiscMenu.hidden = false;
+  itemDiscMenu.innerHTML = `
+  <item-disc name="${jsonKey}" data-id="${itemId}"></item-disc>
+  `;
 }
-function deriveWeightAndBalanceData(serverData, desiredData) {
-  /*
-    Takes the JSON packet from the server and extracts the Weight and Balance data relevant to the specific request
-    INPUT
-    serverData - json packet from server
-    desiredData - ???
-    */
-}
+function deriveWeightAndBalanceData(serverData, desiredData) {}
 
 function createJsonResponse(configs, tailNums) {
   /**
@@ -54,6 +48,11 @@ function createJsonResponse(configs, tailNums) {
   return dataPacket;
 }
 
+/**
+ * Populates the LHS menu in the server's response, displaying the limitations
+ * and centrograms
+ * @param {object<number>} fuelLimitaions - takeoff and landing limits
+ */
 function populateLimitaions(fuelLimitaions) {
   /**
    * takes the calculation output from the server and displays it in the left side menu
@@ -82,7 +81,11 @@ function populateLimitaions(fuelLimitaions) {
     alert("תקלה בחישוב התצורה");
   }
 }
-
+/**
+ * sends user selections (bundled in JSON format) to server side for calculation.
+ * awaits the response and returns in in JSON format
+ * @param {JSON} targetJson
+ */
 async function sendCalculationAndGetSolution(targetJson) {
   console.log("Creating data bundle");
   // createJsonResponse() TODO: edit this function
@@ -108,21 +111,25 @@ document.addEventListener("DOMContentLoaded", () => {
     populateRightMenu(aircrafts, "tailNumber", "aircraft");
 
     document.querySelectorAll(".aircraft").forEach((btn) => {
-      btn.addEventListener("click", () => {});
-    });
-
-    document.getElementById("items").addEventListener("click", () => {
-      document.getElementById("menu_headline").innerHTML = "פריטי משימה";
-      populateRightMenu(ACitems, "itemName", "ACitems");
-
-      document.querySelectorAll(".ACitemsן").forEach((btn) => {
-        btn.addEventListener("click", () => {});
+      btn.addEventListener("click", () => {
+        createItemDiscMenu(btn.getAttribute("data-id"), "aircrafts");
       });
     });
+  });
 
-    document.getElementById("presets").addEventListener("click", () => {
-      document.getElementById("menu_headline").innerHTML = "פריסטים";
+  document.getElementById("items").addEventListener("click", () => {
+    document.getElementById("menu_headline").innerHTML = "פריטי משימה";
+    populateRightMenu(ACitems, "itemName", "ACitems");
+
+    document.querySelectorAll(".ACitems").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        createItemDiscMenu(btn.getAttribute("data-id"), "ACitems");
+      });
     });
+  });
+
+  document.getElementById("presets").addEventListener("click", () => {
+    document.getElementById("menu_headline").innerHTML = "פריסטים";
   });
   // Footer buttons
 
@@ -131,8 +138,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Calculate button
 
   document.getElementById("calculate").addEventListener("click", () => {
-    // TODO: bundle selections together into a JSON
     let button = document.getElementById("calculate");
+    // TODO: bundle selections together into a JSON
     button.innerHTML =
       '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> מחשב...';
     button.disabled = true;

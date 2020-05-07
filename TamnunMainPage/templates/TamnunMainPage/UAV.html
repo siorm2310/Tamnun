@@ -8,6 +8,7 @@
 {{ items|json_script:"JsonACitems" }}
 <link rel="stylesheet" href="{% static 'TamnunMainPage/css/UAV.css' %}">
 <script defer type = "text/javascript" src="{% static 'TamnunMainPage/js/UAV.js' %}"></script>
+<script defer type = "text/javascript" src="{% static 'TamnunMainPage/js/UAV_Components.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -38,10 +39,10 @@
               <!-- This is the left side menu which displays the results of the calculations -->
               {% include "TamnunMainPage/_results_bar.html" %}
             </div>
-            <div class="col-sm-7 text-center">
+            <div class="col-sm-6 text-center">
                 {% include "TamnunMainPage/_schematic.html" %}
             </div>
-            <div class="col-sm-2 sidenav">
+            <div class="col-sm-3 sidenav">
                 <!-- This is the right changing menu. the partial .html file creates the menu -->
                 {% include "TamnunMainPage/_item_menu.html" %}
             </div>
