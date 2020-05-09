@@ -1,0 +1,27 @@
+[
+  {
+    "Tail Number": "708",
+    "Derivatives": [
+      {
+        "items": "Co-Pilot  Pilot Pylon STA1  Missle STA1  Pylon STA6  Missle STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      },
+      {
+        "items": "Co-Pilot  Pilot Pylon STA1   Pylon STA6 ",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      },
+      {
+        "items": "Co-Pilot  Pilot Pylon STA1  Pylon STA6  Missle STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      },
+      {
+        "items": "Co-Pilot  Pilot Pylon STA1 Missle STA1  Pylon STA6 ",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      }
+    ]
+  }
+]

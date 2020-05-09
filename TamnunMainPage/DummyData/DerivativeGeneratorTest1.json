@@ -1,0 +1,53 @@
+[
+  {
+    "Tail Number": "708",
+    "Derivatives": [
+      { "items": "Co-Pilot", "Weight": 20352.0, "CG": 319.17151139937107 },
+      {
+        "items": "Co-Pilot  Pilot",
+        "Weight": 20452.0,
+        "CG": 317.7576080578917
+      },
+      {
+        "items": "Co-Pilot  Pylon STA1",
+        "Weight": 20482.0,
+        "CG": 319.0498291182502
+      },
+      {
+        "items": "Co-Pilot  Pylon STA1  Missle STA1",
+        "Weight": 20982.0,
+        "CG": 318.9533218949576
+      },
+      {
+        "items": "Co-Pilot  Pylon STA6",
+        "Weight": 20482.0,
+        "CG": 319.0498291182502
+      },
+      {
+        "items": "Co-Pilot  Pylon STA6  Missle STA6",
+        "Weight": 20982.0,
+        "CG": 318.9533218949576
+      },
+      {
+        "items": "Co-Pilot  Pilot  Pylon STA1",
+        "Weight": 20582.0,
+        "CG": 317.6454474783792
+      },
+      {
+        "items": "Co-Pilot  Pilot  Pylon STA1  Missle STA1",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      },
+      {
+        "items": "Co-Pilot  Pilot  Pylon STA6",
+        "Weight": 20582.0,
+        "CG": 317.6454474783792
+      },
+      {
+        "items": "Co-Pilot  Pilot  Pylon STA6  Missle STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      }
+    ]
+  }
+]

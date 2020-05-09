@@ -1,15 +1,23 @@
-from django.shortcuts import render,redirect, reverse
-from django.http import HttpResponse , JsonResponse, HttpRequest
+from django.shortcuts import render, redirect, reverse
+from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.generic import ListView
+from django.views.decorators.csrf import ensure_csrf_cookie
 import json, time
 from .models import *
 from .queries import ViewQueries
 
 # Create your views here.
 class PlatformSelectionView(ListView):
+    """This view refers the user to a Platform selection list, divided by TMS
+
+    Arguments:
+        ListView {class} -- Django's class-based view
+    """
+
     model = AircraftType
 
-def general_calc_tamnun(request, methods = ['POST', 'GET']):
+
+def general_calc_tamnun(request, methods=["POST", "GET"]):
     """
     TODO:
     1. get data relevant to the user from the data base
@@ -17,47 +25,48 @@ def general_calc_tamnun(request, methods = ['POST', 'GET']):
     3. render template with the data
     """
 
-    return render(request, 'TamnunMainPage/UAV.html')
+    return render(request, "TamnunMainPage/UAV.html")
+
 
 def display_main_page(request):
+    """This view renders the Configuration builder view,
+     based on the selected AircraftType selected in the PlatformSelectionView
+
+    Arguments:
+        request {WSGI request} -- Djagno's request object
+        TMS     {string}       -- string representing the TMS, in XX-XX-XX format
+
+    Returns:
+        render                 -- renders the relevant ConfigBuilder view
+    """
     context = ViewQueries.get_frontend_data(tms="11-11-11")
-    
-    return render(request, 'TamnunMainPage/UAV.html',context)
+    if request.method == "POST":
+        return JsonResponse({"hello": "hello"})
+    return render(request, "TamnunMainPage/UAV.html", context)
 
-def dummy_data_serving(request):
-        return JsonResponse({
-            "items" : 
-            [{
-                "פריט 1" : "A",
-                "פריט 2" : "B",
-                "פריט 3" : "C"
-            }],
 
-            "tailNumbers" : 
-            [{
-                "315" : "A",
-                "654" : "B",
-                "342" : "C",
-            }],
-        }
-        )
+@ensure_csrf_cookie
+def calculation_endpoint(request):
+    """This is an API endpoint. Activation of the endpoint with a POST request will trigger a configuraion sequence.
 
-def recieve_frontend_data(request):  
-    if request.method == 'POST':
-        print('got a request')
-        # print(json.loads(request.body))
+    Arguments:
+        request {WSGI request} -- Djagno's request object. Must be a POST request and in JSON format,
+        in accordance to agreed upon keys (See docs for example)
+
+    Returns:
+        CalcResult [JSON]      -- Result of calculation: Fuel limitations and centrograms
+    """
+    if request.method == "POST":
+        print("Got calculation request")
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError as error:
+            print(f"Error decoding request: {error}")
+        except TypeError as error:
+            print(f"Error in request format: {error}")
+
         time.sleep(2)
-        print('done sleeping')
-        """TODO:
-        1. Get the JSON
-        2. Verify it is a JSON
-        3. retrieve list of derivatives from JSON
-        4. pass the list to the calculation
-        """
-        return JsonResponse({"shloops" : "gloops"})
-
-# def process_calculation_requests(request):
-#     if request.method == 'POST':
-#         selections = request.body
-#         solutions = calculate_WB_limits(selections)
-#     return(solution)
+        print("done sleeping")
+        print(data)
+        return JsonResponse({"shloops": "gloops"})
+    return HttpResponse("No Calculation request was made")

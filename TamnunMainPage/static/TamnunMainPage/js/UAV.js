@@ -90,7 +90,7 @@ async function sendCalculationAndGetSolution(targetJson) {
   console.log("Creating data bundle");
   // createJsonResponse() TODO: edit this function
   console.log("Sending data");
-  const response = await fetch("http://127.0.0.1:8000/receiveJSON", {
+  const response = await fetch("http://127.0.0.1:8000/Calc", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

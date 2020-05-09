@@ -5,14 +5,10 @@ from . import views
 urlpatterns = [
     path("", views.display_main_page, name="UAV"),
     path(
-        "json", views.dummy_data_serving, name="dummy_data_serving"
-    ),  # For testing and dummy data serving
-    path(
-        "receiveJSON", views.recieve_frontend_data, name="revceiveJSON"
+        "Calc", views.calculation_endpoint, name="CalcEndpoint"
     ),  # recieves data from frontEnd
     path("hello", views.display_main_page, name="hello"),  # recieves data from frontEnd
     path(
-        "mello/", views.PlatformSelectionView.as_view(), name="hello"
+        "PlatformSelect/", views.PlatformSelectionView.as_view(), name="hello"
     ),  # recieves data from frontEnd
 ]
-
