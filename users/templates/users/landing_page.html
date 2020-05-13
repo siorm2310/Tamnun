@@ -1,0 +1,26 @@
+<!-- prettier-ignore -->
+{% extends 'users/layout.html' %} {% block title %} Welcome to Tamnun {% endblock %} 
+{% load static %}
+{% block static_files %}
+<link rel="stylesheet" href="{% static 'users/css/landing_page.css' %}" />
+{% endblock %} {% block body %}
+<div class="container-fluid center-screen">
+  <h2>
+    ברוכים הבאים לאפליקציית תמנו"ן
+  </h2>
+  <img
+    src="{% static 'TamnunMainPage/Logo.png' %}"
+    alt="logo"
+    srcset=""
+    id="logo"
+  />
+  <form action="" method="post">
+    {% csrf_token %} {{ form.as_p }}
+    <input type="submit" value="התחבר" class="btn btn-info" />
+    <br />
+    <small>
+      בכל בעיה ניתן לפנות למדור בקרת תצורה
+    </small>
+  </form>
+</div>
+{% endblock %}

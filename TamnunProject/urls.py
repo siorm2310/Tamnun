@@ -22,4 +22,5 @@ urlpatterns = [
     path(
         "Calc/", include("TamnunMainPage.urls")
     ),  # Dummy data serving. delete in production
+    path("users/", include("users.urls")),
 ]

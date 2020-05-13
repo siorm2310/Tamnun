@@ -6,7 +6,7 @@ import json, time
 from .models import *
 from .queries import ViewQueries
 
-# Create your views here.
+
 class PlatformSelectionView(ListView):
     """This view refers the user to a Platform selection list, divided by TMS
 
@@ -14,6 +14,7 @@ class PlatformSelectionView(ListView):
         ListView {class} -- Django's class-based view
     """
 
+    # TODO: edit this view
     model = AircraftType
 
 
