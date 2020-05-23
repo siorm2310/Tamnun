@@ -6,6 +6,8 @@ import json, time
 from .models import *
 from .queries import ViewQueries
 
+from .Algorithms import WBCalc
+
 
 class PlatformSelectionView(ListView):
     """This view refers the user to a Platform selection list, divided by TMS
@@ -41,8 +43,6 @@ def display_main_page(request):
         render                 -- renders the relevant ConfigBuilder view
     """
     context = ViewQueries.get_frontend_data(tms="11-11-11")
-    if request.method == "POST":
-        return JsonResponse({"hello": "hello"})
     return render(request, "TamnunMainPage/UAV.html", context)
 
 
@@ -62,12 +62,29 @@ def calculation_endpoint(request):
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError as error:
-            print(f"Error decoding request: {error}")
+            print(f"Error decoding client's request: {error}")
+            return JsonResponse(
+                {
+                    "takeoff_fuel": "Error",
+                    "landing_fuel": "Error",
+                    "units": "Error",
+                    "centrogram": [],
+                }
+            )
         except TypeError as error:
             print(f"Error in request format: {error}")
-
+            return JsonResponse(
+                {
+                    "takeoff_fuel": "Error",
+                    "landing_fuel": "Error",
+                    "units": "Error",
+                    "centrogram": [],
+                }
+            )
         time.sleep(2)
         print("done sleeping")
         print(data)
-        return JsonResponse({"shloops": "gloops"})
+        CalcResult = json.dumps(WBCalc.get_limits(data))
+        # return JsonResponse(CalcResult)
+        return JsonResponse({"status": "Success"})
     return HttpResponse("No Calculation request was made")

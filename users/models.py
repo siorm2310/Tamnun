@@ -28,5 +28,11 @@ class OperationalUser(models.Model):
     This model extends on Django's authentication systems and adds a "Squadron" fields
     """
 
+    USER_TYPE = [
+        ("HQ", "Headquarters"),
+        ("BS", "Base"),
+        ("DP", "Depot"),
+    ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     squadron = models.ForeignKey(Squadron, on_delete=models.CASCADE)
+    user_type = models.CharField(max_length=2, choices=USER_TYPE, default="BS")

@@ -1,0 +1,142 @@
+[
+  {
+    "Tail Number": "708",
+    "Derivatives": [
+      {
+        "items": "Pilot, Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      },
+      {
+        "items": "Pilot, Pylon STA1",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      },
+      {
+        "items": "Pilot, Pylon STA1",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": "weight"
+      },
+      {
+        "items": "Pilot, Pylon STA1",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": "cg"
+      },
+      {
+        "items": "Pilot, Pylon STA1",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": ["weight", "cg"]
+      },
+
+      {
+        "items": "Pilot, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      },
+      {
+        "items": "Pilot, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": "weight"
+      },
+      {
+        "items": "Pilot, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": "cg"
+      },
+      {
+        "items": "Pilot, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": ["weight", "cg"]
+      },
+
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": "weight pylonSTA1"
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": "cg pylonSTA1"
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": ["weight pylonSTA1", "cg pylonSTA1"]
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": "weight pylonSTA6"
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": "cg pylonSTA6"
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": ["weight pylonSTA6", "cg pylonSTA6"]
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": ["weight pylonSTA1", "weight pylonSTA6"]
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": ["cg pylonSTA1", "cg pylonSTA6"]
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": ["weight pylonSTA1", "cg pylonSTA6"]
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": ["cg pylonSTA1", "weight pylonSTA6"]
+      },
+      {
+        "items": "Pilot,Pylon STA1, Pylon STA6",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224,
+        "deltas": [
+          "weight pylonSTA1",
+          "cg pylonSTA1",
+          "weight pylonSTA6",
+          "cg pylonSTA6"
+        ]
+      },
+
+      {
+        "items": "Pilot",
+        "Weight": 21082.0,
+        "CG": 317.58270562565224
+      }
+    ]
+  }
+]
