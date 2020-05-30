@@ -20,6 +20,9 @@ class AircraftType(models.Model):
 
     RLE = models.FloatField(name="RLE")
     MAC = models.FloatField(name="MAC", null=True, blank=True)
+    SF_W = models.FloatField(name="Weight SF", default=0.0)
+    SF_CGlong = models.FloatField(name="Long. CG SF", default=0.0)
+    SF_CGlat = models.FloatField(name="Lat. CG SF", null=True, blank=True)
     TMS = models.CharField(
         max_length=8,
         name="TMS",
@@ -46,7 +49,8 @@ class AircraftSubType(models.Model):
     Examples of sub types : Zik TVUAA / DAF PLADA , EITAN MANA A / MANA B , YANSHUF 1/2/3
     """
 
-    relatedAircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedAircraftType = models.ForeignKey(
+        AircraftType, on_delete=models.CASCADE)
     subTypeName = models.CharField(max_length=32)
 
     def __str__(self):
@@ -60,7 +64,8 @@ class ItemGroup(models.Model):
     """
 
     itemGroupName = models.CharField(max_length=32, name="itemGroupName")
-    relatedAircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedAircraftType = models.ForeignKey(
+        AircraftType, on_delete=models.CASCADE)
     relatedAircraftSubType = models.ForeignKey(
         AircraftSubType, on_delete=models.CASCADE
     )
@@ -94,7 +99,8 @@ class Item(models.Model):
         default=10,
         help_text="Enter estimated dimentions relative to A/C in inch/cm. If not known, set to default",
     )  # Y dimentions for the item
-    relatedAircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedAircraftType = models.ForeignKey(
+        AircraftType, on_delete=models.CASCADE)
     itemGroup = models.ForeignKey(
         ItemGroup, on_delete=models.CASCADE, null=True, blank=True
     )
@@ -123,7 +129,8 @@ class Aircraft(models.Model):
     basicWeight = models.FloatField(name="basicWeight")
     basicXCG = models.FloatField(name="basicXCG")
     basicYCG = models.FloatField(name="basicYCG")
-    relatedAircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedAircraftType = models.ForeignKey(
+        AircraftType, on_delete=models.CASCADE)
     relatedAircraftSubType = models.ForeignKey(
         AircraftSubType, on_delete=models.CASCADE, null=True
     )
@@ -145,7 +152,8 @@ class FuelFlow(models.Model):
         name="fuelDescription",
         help_text="Enter a short description for the fuel flow",
     )
-    relatedAircraftType = models.ForeignKey(AircraftType, on_delete=models.CASCADE)
+    relatedAircraftType = models.ForeignKey(
+        AircraftType, on_delete=models.CASCADE)
     relatedItem = models.ForeignKey(
         Item, on_delete=models.CASCADE, null=True, blank=True
     )
@@ -178,7 +186,8 @@ class Envelope(models.Model):
     relatedAircraftSubType = models.ForeignKey(
         AircraftSubType, on_delete=models.CASCADE, null=True, blank=True
     )
-    envelopeType = models.CharField(max_length=4, choices=ENVELOPE_TYPE, default="LONG")
+    envelopeType = models.CharField(
+        max_length=4, choices=ENVELOPE_TYPE, default="LONG")
     Envelope = ArrayField(ArrayField(models.FloatField()))
 
     def __str__(self):

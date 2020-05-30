@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.generic import ListView
 from django.views.decorators.csrf import ensure_csrf_cookie
-import json, time
+import json
+import time
 from .models import *
 from .queries import ViewQueries
 
@@ -16,8 +17,31 @@ class PlatformSelectionView(ListView):
         ListView {class} -- Django's class-based view
     """
 
+    # view_types: {
+    #     "UAV": UAVView,
+    #     "Fighter": FighterView,
+    #     "CargoAndHelos": CargoView,
+    #     "HeavyCargo": HeavyCargoView,
+    # }
+
     # TODO: edit this view
     model = AircraftType
+
+
+def UAVView(request):
+    pass
+
+
+def FighterView(request):
+    pass
+
+
+def CargoView(request):
+    pass
+
+
+def HeavyCargoView(request):
+    pass
 
 
 def general_calc_tamnun(request, methods=["POST", "GET"]):
@@ -57,30 +81,22 @@ def calculation_endpoint(request):
     Returns:
         CalcResult [JSON]      -- Result of calculation: Fuel limitations and centrograms
     """
+    error_json = {
+        "takeoff_fuel": "Error",
+        "landing_fuel": "Error",
+        "units": "Error",
+        "centrogram": [],
+    }
     if request.method == "POST":
         print("Got calculation request")
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError as error:
             print(f"Error decoding client's request: {error}")
-            return JsonResponse(
-                {
-                    "takeoff_fuel": "Error",
-                    "landing_fuel": "Error",
-                    "units": "Error",
-                    "centrogram": [],
-                }
-            )
+            return JsonResponse(error_json)
         except TypeError as error:
             print(f"Error in request format: {error}")
-            return JsonResponse(
-                {
-                    "takeoff_fuel": "Error",
-                    "landing_fuel": "Error",
-                    "units": "Error",
-                    "centrogram": [],
-                }
-            )
+            return JsonResponse(error_json)
         time.sleep(2)
         print("done sleeping")
         print(data)
