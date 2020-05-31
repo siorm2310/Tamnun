@@ -39,10 +39,8 @@ class CentrogramUtilites:
 
             p1 = [weight * (1 + (W_SF / 100)), CG + CG_SF_MAC]  # heavy, aft
             p2 = [weight * (1 - (W_SF / 100)), CG + CG_SF_MAC]  # light, aft
-            p3 = [weight * (1 - (W_SF / 100)), CG -
-                  CG_SF_MAC]  # light, forward
-            p4 = [weight * (1 + (W_SF / 100)), CG -
-                  CG_SF_MAC]  # heavy, forward
+            p3 = [weight * (1 - (W_SF / 100)), CG - CG_SF_MAC]  # light, forward
+            p4 = [weight * (1 + (W_SF / 100)), CG - CG_SF_MAC]  # heavy, forward
 
             return [
                 tn,
