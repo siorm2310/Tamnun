@@ -22,6 +22,64 @@ def index(array, item):
             return idx
 
 
+def centrogram_spacing(fuel_flow, desired_interval):
+    """
+    This function takes a centrogram input with any interval spacing,
+    including ones with unequal spacing between points, as well as a desired interval size.
+    Then it creates a new centrogram output that is the same shape as the input centrogram,
+    but with the spacing as specified by the desired interval input.
+
+    INPUT:
+    centrogram (Nx3 array) : array of weights (lb) and x, y moments (lb*in) for fuel use path
+    desired_interval (float) : interval in weight at which the output centrogram will be made
+
+    OUTPUT:
+    output_centrogram (Mx3 array) : same width as input centrogram,
+    but with more rows (length M) for points at desired interval spacing
+    """
+
+    start = fuel_flow[0][0]
+    end = fuel_flow[-1][0]
+    # Need +1 because otherwise will be one short since index starts with 0
+    length_of_output = int(round((end - start)/desired_interval)+1)
+    # centrogram_output = np.arange(start, end, desired_interval)
+    centrogram_output = np.zeros(shape=(length_of_output, 3))
+    for n in range(length_of_output):
+        centrogram_output[n][0] = fuel_flow[0][0] + desired_interval*n
+    if centrogram_output[-1][0] > fuel_flow[-1][0]:
+        centrogram_output = np.delete(centrogram_output, -1, axis=0)
+    if centrogram_output[-1][0] != fuel_flow[-1][0]:
+        centrogram_output = np.append(
+            centrogram_output, [np.append(fuel_flow[-1][0], [0, 0])], axis=0)
+
+    previous_counter = 0
+    for n in range(len(centrogram_output)):
+        counter = 0
+        if previous_counter > 0:    # avoids running unnecessary loops
+            counter = previous_counter
+
+        if centrogram_output[n][0] == fuel_flow[counter][0]:
+            centrogram_output[n][1] = fuel_flow[counter][1]
+            centrogram_output[n][2] = fuel_flow[counter][2]
+            continue
+        elif centrogram_output[n][0] > fuel_flow[counter][0] and centrogram_output[n][0] < fuel_flow[counter+1][0]:
+            fuel_flow_weight = [fuel_flow[counter][0], fuel_flow[counter+1][0]]
+            fuel_flow_x = [fuel_flow[counter][1], fuel_flow[counter+1][1]]
+            fuel_flow_y = [fuel_flow[counter][2], fuel_flow[counter+1][2]]
+        elif centrogram_output[n][0] > fuel_flow[counter][0]:
+            while centrogram_output[n][0] > fuel_flow[counter][0]:
+                fuel_flow_weight = [fuel_flow[counter][0], fuel_flow[counter+1][0]]
+                fuel_flow_x = [fuel_flow[counter][1], fuel_flow[counter+1][1]]
+                fuel_flow_y = [fuel_flow[counter][2], fuel_flow[counter+1][2]]
+                counter += 1
+            previous_counter = counter
+
+        centrogram_output[n][1] = np.interp(centrogram_output[n][0], fuel_flow_weight, fuel_flow_x)
+        centrogram_output[n][2] = np.interp(centrogram_output[n][0], fuel_flow_weight, fuel_flow_y)
+
+    return centrogram_output
+
+
 def check_point_in_polygon(polygon_input, point_input):
     """Checks whether a point is within a closed polygon, according to BAKAT's definition
 
@@ -181,44 +239,6 @@ def fuel_in_envelope_bisection(
         fuel_bounds, centrogram, centrogram_CG)
 
     return centrogram_CG
-
-
-def bisection(k, n1, n2, fuel_inside_envelope, change_points):
-    """
-    This function iteratively find the change points of the centogram using a bisection method 
-
-    INPUT:
-    k (float): an index 
-    n1 (float): the smaller index
-    n2 (float): the bigger index
-    fuel_inside_envelope (2x8x4 array) : array of boolean values pointing if a point in the centrogram is in the envelope
-    change_points (1x2 array): array of change point of the centrogram
-
-    OUTPUT:
-    change_points (1x2 array): updated array of change point of the centrogram 
-    """
-    if fuel_inside_envelope[k][n1] == fuel_inside_envelope[k][n2]:
-        return change_points
-    # setting the middle index
-    n = round((n2 - n1) / 2) + n1
-    # the middle point is still in the envelope
-    if fuel_inside_envelope[k][n] == True:
-        if (
-            fuel_inside_envelope[k][n + 1] == False
-        ):  # check if the middle point is the change point
-            change_points = np.append(
-                change_points, [np.append(n, n + 1)], axis=0)
-            return change_points
-        else:
-            bisection(k, n, n2, fuel_inside_envelope,
-                      change_points)  # iteration
-    elif (
-        fuel_inside_envelope[k][n - 1] == True
-    ):  # check if the middle point is the change point
-        change_points = np.append(change_points, [np.append(n - 1, n)], axis=0)
-        return change_points
-    else:
-        bisection(k, n1, n, fuel_inside_envelope, change_points)  # iteration
 
 
 def bisection2(n1, n2, fuel_inside_envelope, change_points):
