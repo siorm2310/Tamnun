@@ -2,8 +2,6 @@ import numpy as np
 import math
 from shapely.geometry.polygon import Polygon
 from shapely.geometry import Point
-import Algorithms.create_reducted_polygon as redpol
-import Algorithms.centrogram_spacing_func as centrogram_finder
 
 
 def index(array, item):
@@ -22,62 +20,30 @@ def index(array, item):
             return idx
 
 
-def centrogram_spacing(fuel_flow, desired_interval):
+def centrogram_spacing(centrogram, desired_interval):
+    """Interpolates centrogram data to a desired spacing
+
+    Arguments:
+        centrogram {list[Weights,[moments]]} -- centrogram to be interpolated (Weight-Moment)
+        desired_interval {float} -- spacing required for centrogram
+
+    Returns:
+        list[[weights],[moments]]
     """
-    This function takes a centrogram input with any interval spacing,
-    including ones with unequal spacing between points, as well as a desired interval size.
-    Then it creates a new centrogram output that is the same shape as the input centrogram,
-    but with the spacing as specified by the desired interval input.
+    start_weight = centrogram[0][0]
+    end_weight = centrogram[0][-1]
+    length_of_output = int(round((end_weight - start_weight)/desired_interval) + 1)
 
-    INPUT:
-    centrogram (Nx3 array) : array of weights (lb) and x, y moments (lb*in) for fuel use path
-    desired_interval (float) : interval in weight at which the output centrogram will be made
+    weights = [start_weight + desired_interval * n for n in range(length_of_output)]
 
-    OUTPUT:
-    output_centrogram (Mx3 array) : same width as input centrogram,
-    but with more rows (length M) for points at desired interval spacing
-    """
+    if weights[-1] > end_weight:
+        weights.pop()
+    if weights[-1] < end_weight:
+        weights.append(end_weight)
 
-    start = fuel_flow[0][0]
-    end = fuel_flow[-1][0]
-    # Need +1 because otherwise will be one short since index starts with 0
-    length_of_output = int(round((end - start)/desired_interval)+1)
-    # centrogram_output = np.arange(start, end, desired_interval)
-    centrogram_output = np.zeros(shape=(length_of_output, 3))
-    for n in range(length_of_output):
-        centrogram_output[n][0] = fuel_flow[0][0] + desired_interval*n
-    if centrogram_output[-1][0] > fuel_flow[-1][0]:
-        centrogram_output = np.delete(centrogram_output, -1, axis=0)
-    if centrogram_output[-1][0] != fuel_flow[-1][0]:
-        centrogram_output = np.append(
-            centrogram_output, [np.append(fuel_flow[-1][0], [0, 0])], axis=0)
+    moments = np.interp(weights, centrogram[0], centrogram[1])
 
-    previous_counter = 0
-    for n in range(len(centrogram_output)):
-        counter = 0
-        if previous_counter > 0:    # avoids running unnecessary loops
-            counter = previous_counter
-
-        if centrogram_output[n][0] == fuel_flow[counter][0]:
-            centrogram_output[n][1] = fuel_flow[counter][1]
-            centrogram_output[n][2] = fuel_flow[counter][2]
-            continue
-        elif centrogram_output[n][0] > fuel_flow[counter][0] and centrogram_output[n][0] < fuel_flow[counter+1][0]:
-            fuel_flow_weight = [fuel_flow[counter][0], fuel_flow[counter+1][0]]
-            fuel_flow_x = [fuel_flow[counter][1], fuel_flow[counter+1][1]]
-            fuel_flow_y = [fuel_flow[counter][2], fuel_flow[counter+1][2]]
-        elif centrogram_output[n][0] > fuel_flow[counter][0]:
-            while centrogram_output[n][0] > fuel_flow[counter][0]:
-                fuel_flow_weight = [fuel_flow[counter][0], fuel_flow[counter+1][0]]
-                fuel_flow_x = [fuel_flow[counter][1], fuel_flow[counter+1][1]]
-                fuel_flow_y = [fuel_flow[counter][2], fuel_flow[counter+1][2]]
-                counter += 1
-            previous_counter = counter
-
-        centrogram_output[n][1] = np.interp(centrogram_output[n][0], fuel_flow_weight, fuel_flow_x)
-        centrogram_output[n][2] = np.interp(centrogram_output[n][0], fuel_flow_weight, fuel_flow_y)
-
-    return centrogram_output
+    return [weights, list(moments)]
 
 
 def check_point_in_polygon(polygon_input, point_input):
@@ -86,7 +52,6 @@ def check_point_in_polygon(polygon_input, point_input):
     Arguments:
         polygon_input {list(tuple(Weight,CG))} -- list containing tuple pairs of Weight, CG values
         point_input {tuple(x,y)} 
-
     Returns:
         [boolean] -- True if within polygon, false otherwise
     """
@@ -246,7 +211,6 @@ def bisection2(n1, n2, fuel_inside_envelope, change_points):
     This function iteratively find the change points of the centogram using a bisection method 
 
     INPUT:
-    k (float): an index 
     n1 (float): the smaller index
     n2 (float): the bigger index
     fuel_inside_envelope (2x8x4 array) : array of boolean values pointing if a point in the centrogram is in the envelope
