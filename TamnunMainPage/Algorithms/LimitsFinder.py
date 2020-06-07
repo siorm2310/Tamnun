@@ -21,7 +21,7 @@ def centrogram_spacing(centrogram, desired_interval):
         desired_interval {float} -- spacing required for centrogram
 
     Returns:
-        list[[weights],[moments]]
+        list[[weights],[moments]] evenly-spaced centrogram
     """
     start_weight = centrogram[0][0]
     end_weight = centrogram[0][-1]

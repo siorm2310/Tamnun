@@ -3,7 +3,7 @@
 import json
 import numpy as np
 from .DerivativeGrenerator import Derivative_Grenerator
-
+import operator
 # from .LimitsFinder import fuel_in_envelope_bisection
 
 
@@ -118,11 +118,24 @@ def get_limits_from_centrogram(centrogram, envelope):
     pass
 
 
-def get_most_strict_limits(centrograms, envelope):
-    pass
+def get_most_strict_limits(limits):
+    takeoff_limits = [limit["takeoff_fuel"] for limit in limits]
+    landing_limits = [limit["landing_fuel"] for limit in limits]
+
+    return [min(takeoff_limits), max(landing_limits)]
 
 
 def perform_WB_calc(parsed_client_request):
+    """
+    flow:
+    1. get parsed data from user
+    2. apply SF
+    3. ready up data for calculation
+    4. calculate and filter
+    5. get most strict limits
+    6. send to user
+
+    """
     pass
 
 
