@@ -153,9 +153,8 @@ if __name__ == "__main__":
     ) as f:
         fuelflow = json.loads(f.read())
 
-    centrograms = CentrogramUtilites.create_cenrogram_from_configs(
-        configs, fuelflow)
-
+    # centrograms = CentrogramUtilites.create_cenrogram_from_configs(configs, fuelflow)
+    centrograms = create_cenrogram_from_configs(configs, fuelflow)
     with open(
         "C:\\Tamnun\\TAMNUN_DEV\\TamnunProject\\TamnunMainPage\\DummyData\\centrograms1.json",
         "w",
