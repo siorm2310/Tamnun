@@ -1,7 +1,7 @@
 import json 
-import numpy as np 
-import scipy
-import matplotlib as mpl 
+# import numpy as np 
+# import scipy
+# import matplotlib as mpl 
 
 
 def Exist(item,itemlist):
