@@ -149,4 +149,4 @@ def perform_WB_calc(parsed_client_request):
 
     discrete_configs = list_discrete_configs(parsed_client_request)
     centrograms = create_centrograms_from_configs(discrete_configs, backend_calc_data["fuelFlows"])
-    pass
+    return []
