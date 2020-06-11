@@ -11,7 +11,6 @@ class ViewQueries:
 
         Arguments:
             tms {string} -- TMS string of chosen aircraft
-
         Returns:
             data [dict] -- dictionary holding the data extracted from DB
         """
@@ -40,3 +39,20 @@ class ViewQueries:
             print(err)
             data = {}
         return data
+
+
+def get_WB_calc_data(tms):
+    aircraftType = get_object_or_404(AircraftType, TMS=tms)
+    try:
+        fuelFlows = FuelFlow.objects.filter(relatedAircraftType=aircraftType).values()
+        envelopes = Envelope.objects.filter(relatedAircraftType=aircraftType).values()
+    except:
+        print("Error retirieving fuelflows and envelopes")
+
+    data = {
+        "aircraftType": aircraftType,
+        "fuelFlows": list(fuelFlows),
+        "envelopes": list(envelopes),
+    }
+
+    return data

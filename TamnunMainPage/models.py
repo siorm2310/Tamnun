@@ -158,10 +158,11 @@ class FuelFlow(models.Model):
         Item, on_delete=models.CASCADE, null=True, blank=True
     )
     isInternal = models.BooleanField()
+    # TODO: incorrect structure, revise
     fuelFlow = ArrayField(ArrayField(models.FloatField()), default=list)
 
     def __str__(self):
-        return f"FUEL-FLOW. AIRCRAFT TYPE : {self.relatedAircraft} ; DESCRIPTION : {self.fuelFlowDescription}"
+        return f"FUEL-FLOW. AIRCRAFT TYPE : {self.relatedAircraftType} ; DESCRIPTION : {self.fuelDescription}"
 
 
 class Envelope(models.Model):

@@ -1,0 +1,17 @@
+{
+  "name": "DummyConfig1",
+  "TMS": "11-11-11",
+  "platform": "F-17",
+  "aircrafts": [
+    { "Tail_num": ["708"] },
+    { "Weight": ["20252"] },
+    { "CG": ["320.55"] }
+  ],
+  "items": ["Pilot", "Pylon STA1", "Pylon STA6"],
+  "father": ["Pilot", "Pylon STA1", "Pylon STA6"],
+  "derivative": [false, true, true],
+  "weight": [100, 100, 130, 130, 500, 500],
+  "weight_delta": [0, 0, 0, 0, 100, 200],
+  "cg": [30, 40, 300, 300, 315, 315],
+  "cg_d": [0, 0, 0, 0, 20, 20]
+}

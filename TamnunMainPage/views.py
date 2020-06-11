@@ -6,8 +6,7 @@ import json
 import time
 from .models import *
 from .queries import ViewQueries
-
-from .Algorithms import WBCalc
+# import Algorithms.WBCalc as WBCalc
 
 
 class PlatformSelectionView(ListView):

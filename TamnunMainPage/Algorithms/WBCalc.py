@@ -3,8 +3,10 @@
 import json
 import numpy as np
 from .DerivativeGrenerator import Derivative_Grenerator
+from .LimitsFinder import fuel_limits_finder
 import operator
-# from .LimitsFinder import fuel_in_envelope_bisection
+
+from ..queries import get_WB_calc_data
 
 
 def apply_safety_factors(W_SF, CG_SF, weight, CG, Tail_num, MAC=None):
@@ -68,13 +70,16 @@ def list_discrete_configs(client_request):
         discrete_configs [list] -- list of dicts
     """
     try:
-        server_data = json.loads(client_request)
-        discrete_configs = Derivative_Grenerator(server_data)
+        discrete_configs = Derivative_Grenerator(client_request)
     except json.JSONDecodeError as error:
         print("Error deserialize client request", error)
         return {}
     except TypeError as error:
         print("Error deserialize client request", error)
+        return {}
+    except KeyError as error:
+        print("Error getting data's keys. check for correct input")
+        print(error)
         return {}
     else:
         return discrete_configs
@@ -114,10 +119,6 @@ def filter_centrograms(centrograms, envelope):
     pass
 
 
-def get_limits_from_centrogram(centrogram, envelope):
-    pass
-
-
 def get_most_strict_limits(limits):
     takeoff_limits = [limit["takeoff_fuel"] for limit in limits]
     landing_limits = [limit["landing_fuel"] for limit in limits]
@@ -136,28 +137,16 @@ def perform_WB_calc(parsed_client_request):
     6. send to user
 
     """
+    # TODO: get data from server
+
+    backend_calc_data = get_WB_calc_data(tms=parsed_client_request["TMS"])
+
+    aircrafts = parsed_client_request["aircrafts"]
+    for tail_num, weight, CGlong in zip(aircrafts[0]["Tail_num"], aircrafts[1]["Weight"], aircrafts[2]["CG"]):
+        SF_aircrafts = apply_safety_factors(W_SF, CG_SF, weight, CGlong, tail_num, MAC=MAC)
+    parsed_client_request.pop("aircafts")
+    parsed_client_request["aircrafts"] = SF_aircrafts
+
+    discrete_configs = list_discrete_configs(parsed_client_request)
+    centrograms = create_centrograms_from_configs(discrete_configs, backend_calc_data["fuelFlows"])
     pass
-
-
-if __name__ == "__main__":
-    """Testing script - delete in prod
-    """
-    import json
-
-    with open(
-        "C:\\Tamnun\\TAMNUN_DEV\\TamnunProject\\TamnunMainPage\\DummyData\\DerivativeGeneratorTest1.json"
-    ) as f:
-        configs = json.loads(f.read())
-    with open(
-        "C:\\Tamnun\\TAMNUN_DEV\\TamnunProject\\TamnunMainPage\\DummyData\\fuelflow1.json"
-    ) as f:
-        fuelflow = json.loads(f.read())
-
-    # centrograms = CentrogramUtilites.create_cenrogram_from_configs(configs, fuelflow)
-    centrograms = create_cenrogram_from_configs(configs, fuelflow)
-    with open(
-        "C:\\Tamnun\\TAMNUN_DEV\\TamnunProject\\TamnunMainPage\\DummyData\\centrograms1.json",
-        "w",
-    ) as f:
-        f.write(json.dumps(centrograms))
-# 

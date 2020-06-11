@@ -1,3 +1,5 @@
+""" centrogram spacing algorithm and calculation of single centrogram's limits on a single envelope"""
+
 import numpy as np
 import math
 from shapely.geometry.polygon import Polygon
@@ -56,27 +58,6 @@ def check_point_in_polygon(polygon_input, point_input):
     return False
 
 
-def fuel_limits_finder(envelope, centrogram):
-
-    centrogram_status = []
-
-    for point in centrogram:
-        centrogram_status.append(check_point_in_polygon(envelope, point))
-
-    if all(centrogram_status) == True:
-        print("Full fuel")
-        return [centrogram[0], centrogram[-1]]
-
-    if all(centrogram_status) == False:
-        print("No fuel")
-        return [0, 0]
-
-    change_points = np.zeros(shape=(1, 2))
-    fuel_limits = bisection(
-        0, centrogram_status.__len__(), centrogram_status, change_points)
-    return fuel_limits
-
-
 def bisection(n1, n2, fuel_inside_envelope, change_points):
     """
     This function iteratively find the change points of the centogram using a bisection method 
@@ -107,3 +88,24 @@ def bisection(n1, n2, fuel_inside_envelope, change_points):
         return change_points
     else:
         bisection(n1, n, fuel_inside_envelope, change_points)  # Recursive call
+
+
+def fuel_limits_finder(envelope, centrogram):
+
+    centrogram_status = []
+
+    for point in centrogram:
+        centrogram_status.append(check_point_in_polygon(envelope, point))
+
+    if all(centrogram_status) == True:
+        print("Full fuel")
+        return [centrogram[0], centrogram[-1]]
+
+    if all(centrogram_status) == False:
+        print("No fuel")
+        return [0, 0]
+
+    change_points = np.zeros(shape=(1, 2))
+    fuel_limits = bisection(
+        0, centrogram_status.__len__(), centrogram_status, change_points)
+    return fuel_limits
