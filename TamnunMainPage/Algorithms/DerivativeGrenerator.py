@@ -1,8 +1,7 @@
 import json 
-# import numpy as np 
-# import scipy
-# import matplotlib as mpl 
-
+import numpy as np 
+import scipy
+import matplotlib as mpl 
 
 def Exist(item,itemlist):
     '''
@@ -184,7 +183,7 @@ def True_Derivative(derivative,i,items):
     m=(float(items["weight"][i])+float(items["weight_delta"][i]))*(float(items["cg"][i])+float(items["cg_d"][i]))
     for j in range(l):
         d = {
-            "items":(derivative[j])["items"]+"  "+items["items"][i],
+            "items":(derivative[j])["items"]+","+items["items"][i],
             "weight":(derivative[j])["weight"]+(float(items["weight"][i])+float(items["weight_delta"][i])),
             "moment" :(derivative[j])["moment"]+m
             }
@@ -216,7 +215,8 @@ def Derivative_Grenerator_P1(items,classified):
     # derivative=[{"items":txt.strip(),"weight":weight,"moment":moment}]
     for i in range(le):
         if i not in classified["priority"]:
-            txt+="  "+items["items"][i]
+            txt+=","+items["items"][i]
+            txt=txt.strip(',')
             weight+=float(items["weight"][i])
             moment+=(float(items["weight"][i])*float(items["cg"][i]))
     derivative=[{"items":txt.strip(),"weight":weight,"moment":moment}]
@@ -312,12 +312,13 @@ def Items(item,itemlist,items,classified):
     dev=[]
     for j in range(len(itemlist)):
         split=itemlist[j]["items"].split(item)
-        string=split[0]+" "+item
+        string=split[0]+item
         weight=0
         moment=0
         for i in classified["priority"]:
             if items["father"][i]==item:
-                string+="  "+str(items["items"][i])+" "+split[-1]
+                string+=','+str(items["items"][i])+split[-1]
+                string=string.strip(',')
                 weight=float(itemlist[j]["weight"])+(float(items["weight"][i])+float(items["weight_delta"][i]))
                 m=(float(items["weight"][i])+float(items["weight_delta"][i]))*(float(items["cg"][i])+float(items["cg_d"][i]))
                 moment=float(itemlist[j]["moment"])+m
@@ -406,7 +407,7 @@ def Derivative_Grenerator(items):
     return DerivativeList
 
 # Main
-datajson=open("C:/Users/Gilad Timar/Documents/עבודה/scripts/dummyClientRequest4.json", 'r')
+datajson=open("C:/Users/Gilad Timar/Documents/עבודה/scripts/dummyClientRequest0.json", 'r')
 items=json.load(datajson)
 DerivativeList=Derivative_Grenerator(items)
 print(DerivativeList)    
