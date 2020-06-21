@@ -90,13 +90,16 @@ def add_config_to_fuelflow(fuelflow, config_data):
         fuelflow_weight = fuelflow["weight"]
         fuelflow_moment_long = fuelflow["moment_long"]
         config_moment_long = config_data["Weight"] * config_data["CG"]
+        # config_moment_long = config_data["Weight"]
     except KeyError:
         print("KeyError: check if 'weight','moment_long','CG' keys exist ")
         return config_data
     config_moment_long = config_data["Weight"] * config_data["CG"]
+    # config_moment_long = config_data["Weight"]
     centrogram = {
         "name": config_data["items"], "weight": [], "cg_long": []}
     config_moment_long = config_data["Weight"] * config_data["CG"]
+    # config_moment_long = config_data["Weight"]
 
     for weight, moment in list(zip(fuelflow_weight, fuelflow_moment_long)):
         centrogram["weight"].append(weight + config_data["Weight"])

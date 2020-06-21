@@ -3,6 +3,7 @@ import numpy as np
 import scipy
 import matplotlib as mpl 
 
+
 def Exist(item,itemlist):
     '''
     This function checks if the input item is in the itemlist.
@@ -143,28 +144,39 @@ def Delta_Derivative(derivative,i,items):
     '''
     l=len(derivative)
     for j in range(l):
-        dict1={
-            "items":(derivative[j])["items"],
-            "weight":(derivative[j])["weight"]+float(items["weight_delta"][i]),
-            "moment" :(derivative[j])["moment"]+float(items["weight_delta"][i])*float(items["cg"][i])
-            }
-        dict2={
-            "items" : (derivative[j])["items"],
-            "weight" : (derivative[j])["weight"],
-            "moment" : (derivative[j])["moment"]+float(items["weight"][i])*float(items["cg_d"][i])
-            }
-        m=float(items["weight_delta"][i])*float(items["cg"][i])+float(items["weight"][i])*float(items["cg_d"][i])+float(items["weight_delta"][i])*float(items["cg_d"][i])
-        dict3={
-            "items":(derivative[j])["items"],
-            "weight":(derivative[j])["weight"]+float(items["weight_delta"][i]),
-            "moment":(derivative[j])["moment"]+m
-            }
-        if not Exist(dict1,derivative):
-            derivative.append(dict1)    
-        if not Exist(dict2,derivative):
-            derivative.append(dict2)
-        if not Exist(dict3,derivative):
-            derivative.append(dict3)
+        if items["items"][i] in (derivative[j])["items"]:
+            txt1=items["items"][i]+" weight"
+            txt2=items["items"][i]+" cg"
+            txt3=txt1+","+txt2
+            if "deltas" in derivative[j]:
+                txt1+=","+(derivative[j])["deltas"]
+                txt2+=","+(derivative[j])["deltas"]
+                txt3+=","+(derivative[j])["deltas"]
+            dict1={
+                "items":(derivative[j])["items"],
+                "weight":(derivative[j])["weight"]+float(items["weight_delta"][i]),
+                "moment" :(derivative[j])["moment"]+float(items["weight_delta"][i])*float(items["cg"][i]),
+                "deltas":txt1
+                }
+            dict2={
+                "items" : (derivative[j])["items"],
+                "weight" : (derivative[j])["weight"],
+                "moment" : (derivative[j])["moment"]+float(items["weight"][i])*float(items["cg_d"][i]),
+                "deltas":txt2
+                }
+            m=float(items["weight_delta"][i])*float(items["cg"][i])+float(items["weight"][i])*float(items["cg_d"][i])+float(items["weight_delta"][i])*float(items["cg_d"][i])
+            dict3={
+                "items":(derivative[j])["items"],
+                "weight":(derivative[j])["weight"]+float(items["weight_delta"][i]),
+                "moment":(derivative[j])["moment"]+m,
+                "deltas":txt3
+                }
+            if not Exist(dict1,derivative):
+                derivative.append(dict1)    
+            if not Exist(dict2,derivative):
+                derivative.append(dict2)
+            if not Exist(dict3,derivative):
+                derivative.append(dict3)
     return
 
 def True_Derivative(derivative,i,items):
@@ -215,18 +227,19 @@ def Derivative_Grenerator_P1(items,classified):
     # derivative=[{"items":txt.strip(),"weight":weight,"moment":moment}]
     for i in range(le):
         if i not in classified["priority"]:
-            txt+=","+items["items"][i]
-            txt=txt.strip(',')
-            weight+=float(items["weight"][i])
-            moment+=(float(items["weight"][i])*float(items["cg"][i]))
+            if i not in classified["truth"]:
+                txt+=','+items["items"][i]
+                txt=txt.strip(',')
+                weight+=float(items["weight"][i])
+                moment+=(float(items["weight"][i])*float(items["cg"][i]))
     derivative=[{"items":txt.strip(),"weight":weight,"moment":moment}]
+    for i in classified["childless"]:
+        if i in classified["truth"]:
+            True_Derivative(derivative,i,items)
     for i in range(len(items)):
         if i not in classified["priority"]:
             if i in classified["delta"]:
                 Delta_Derivative(derivative,i,items)
-    for i in classified["childless"]:
-        if i in classified["truth"]:
-            True_Derivative(derivative,i,items)
     return derivative
 
 # A function to grenerate a list of physical derivative based on order of loading 
@@ -337,6 +350,7 @@ def Physical_Derivative(items):
 
     INPUT:
     items(dict) : dictonary with the json file data
+
     OUTPUT:
     List of all physical Derviatives(dict) 
     '''
@@ -395,12 +409,23 @@ def Derivative_Grenerator(items):
     for i in range(len(plane["Tail_num"])):
         DerPerPlane.clear()
         for j in range(len(Derivatives)):
+            # moment=(float(plane["Weight"][i])*float(plane["CG"][i])+float((Derivatives[j])["moment"]))
             cg=(float(plane["Weight"][i])*float(plane["CG"][i])+float((Derivatives[j])["moment"]))/(float((Derivatives[j])["weight"])+float(plane["Weight"][i]))
-            dict2={
-                "items":(Derivatives[j])["items"],
-                "Weight":float((Derivatives[j])["weight"])+float(plane["Weight"][i]),
-                "CG":cg
-                }
+            if "deltas" in Derivatives[j]:
+                dict2={
+                    "items":(Derivatives[j])["items"],
+                    "Weight":float((Derivatives[j])["weight"])+float(plane["Weight"][i]),
+                    "CG":cg,
+                    # "Moment":moment,
+                    "deltas":(Derivatives[j])["deltas"]
+                    }
+            else:
+                dict2={
+                    "items":(Derivatives[j])["items"],
+                    "Weight":float((Derivatives[j])["weight"])+float(plane["Weight"][i]),
+                    "CG":cg
+                    # "Moment":moment
+                    }
             DerPerPlane.append(dict2)
         DerivativeList.append({"Tail Number":plane["Tail_num"][i],"Derivatives":DerPerPlane})
     return DerivativeList
@@ -410,16 +435,3 @@ datajson=open("C:/Users/Gilad Timar/Documents/עבודה/scripts/dummyClientRequ
 items=json.load(datajson)
 DerivativeList=Derivative_Grenerator(items)
 print(DerivativeList)    
-
-
-'''
-
-*NEED TO FIX*  Derivative for delta_weight and delta_cg
-i) precognizing which "delta" is taken into account
-ii) doubling exsiting items
-iii) problem in creating derivative with multiple delta taken into account
-iv) checking the calculation time in each case
-v) fixing Clear 
-vi)  **IN THE END** deleting the commented part of the code
-
-'''
