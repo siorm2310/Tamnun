@@ -145,13 +145,14 @@ def Delta_Derivative(derivative,i,items):
     l=len(derivative)
     for j in range(l):
         if items["items"][i] in (derivative[j])["items"]:
-            txt1=items["items"][i]+" weight"
-            txt2=items["items"][i]+" cg"
-            txt3=txt1+","+txt2
+            txt1=[items["items"][i]+" weight"]
+            txt2=[items["items"][i]+" cg"]
+            txt3=[txt1[0],txt2[0]]
             if "deltas" in derivative[j]:
-                txt1+=","+(derivative[j])["deltas"]
-                txt2+=","+(derivative[j])["deltas"]
-                txt3+=","+(derivative[j])["deltas"]
+                for t in range(len((derivative[j])["deltas"])):
+                    txt1.append((derivative[j])["deltas"][t])
+                    txt2.append(((derivative[j])["deltas"])[t])
+                    txt3.append(((derivative[j])["deltas"])[t])
             dict1={
                 "items":(derivative[j])["items"],
                 "weight":(derivative[j])["weight"]+float(items["weight_delta"][i]),
@@ -388,6 +389,7 @@ def Physical_Derivative(items):
     #             "moment":float((Derivatives[i])["moment"])+float((itemlist[j])["moment"])
     #             }
     #         Derivatives.append(dict1)
+    print(len(Derivatives))
     return Derivatives
 # Creating a list with all physical derivatives for each tail number
 def Derivative_Grenerator(items):
@@ -431,7 +433,7 @@ def Derivative_Grenerator(items):
     return DerivativeList
 
 # Main
-datajson=open("C:/Users/Gilad Timar/Documents/עבודה/scripts/dummyClientRequest0.json", 'r')
+datajson=open("C:/Users/Gilad Timar/Documents/עבודה/scripts/dummyClientRequest4.json", 'r')
 items=json.load(datajson)
 DerivativeList=Derivative_Grenerator(items)
 print(DerivativeList)    
