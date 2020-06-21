@@ -337,7 +337,6 @@ def Physical_Derivative(items):
 
     INPUT:
     items(dict) : dictonary with the json file data
-
     OUTPUT:
     List of all physical Derviatives(dict) 
     '''
