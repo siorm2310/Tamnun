@@ -1,3 +1,5 @@
+""" Integration tests for the W&B algorithms"""
+
 import unittest
 import WBCalc
 

@@ -110,13 +110,11 @@ class Item(models.Model):
         return f"{self.itemName}"
 
 
-class MunitionAndExternals(Item):
-    parentItem = models.ForeignKey(
-        "self", on_delete=models.CASCADE
-    )  # parent Item (chain of munition loading) is within MunitionAndExternals category
+class MunitionAndExternals(models.Model):
+    pass
 
 
-class FuelTank(Item):
+class FuelTank(models.Model):
     pass
 
 
@@ -159,7 +157,7 @@ class FuelFlow(models.Model):
     )
     isInternal = models.BooleanField()
     # TODO: incorrect structure, revise
-    fuelFlow = ArrayField(ArrayField(models.FloatField()), default=list)
+    fuelFlow = JSONField(default=dict)
 
     def __str__(self):
         return f"FUEL-FLOW. AIRCRAFT TYPE : {self.relatedAircraftType} ; DESCRIPTION : {self.fuelDescription}"
@@ -185,11 +183,9 @@ class Envelope(models.Model):
         AircraftType, on_delete=models.CASCADE, related_name="aircraftType"
     )
     relatedAircraftSubType = models.ForeignKey(
-        AircraftSubType, on_delete=models.CASCADE, null=True, blank=True
-    )
-    envelopeType = models.CharField(
-        max_length=4, choices=ENVELOPE_TYPE, default="LONG")
-    Envelope = ArrayField(ArrayField(models.FloatField()))
+        AircraftSubType, on_delete=models.CASCADE, null=True, blank=True)
+    envelopeType = models.CharField(max_length=4, choices=ENVELOPE_TYPE, default="LONG")
+    envolopeData = JSONField(default=dict)
 
     def __str__(self):
         return f"ENVELOPE. AIRCRAFT TYPE : {self.relatedAircraftType} ; TYPE : {self.envelopeType}"

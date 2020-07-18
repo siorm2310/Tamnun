@@ -2,9 +2,10 @@
 This tool is used for bulk updating the DB using a CSV file or a .json file.
 Select your model, your data type and upload it to the DB   
 """
-import json
 import csv
-from .models import *
+import json
+import sys
+from TamnunMainPage.models import *
 
 print("Welcome to the DB update command line interface.\nUse this tool for bulk update or creation of model instances.\n")
 input_model = input("Enter model to be updated : ")
