@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.postgres.fields import (
-    ArrayField,
     JSONField,
 )  # Postgres specific fields
 from django.core.validators import RegexValidator
@@ -9,7 +8,6 @@ from django.core.validators import RegexValidator
 
 # TODO: Validate that all required parameters have been passed
 # TODO: Choose a way for handling images and files (other than static files)
-# TODO: create functionality for delivering data to front end
 
 
 class AircraftType(models.Model):
@@ -39,7 +37,7 @@ class AircraftType(models.Model):
     # aircraftImage = models.ImageField(null = True)
 
     def __str__(self):
-        return f"AIRCRAFT : {self.IAFname} ({self.modelName}) ; TMS : {self.TMS}"
+        return f"{self.IAFname} ({self.modelName})"
 
 
 class AircraftSubType(models.Model):
@@ -54,7 +52,7 @@ class AircraftSubType(models.Model):
     subTypeName = models.CharField(max_length=32)
 
     def __str__(self):
-        return f"AIRCRAFT SUB TYPE : {self.subTypeName}"
+        return f"{self.subTypeName}"
 
 
 class ItemGroup(models.Model):
@@ -71,7 +69,7 @@ class ItemGroup(models.Model):
     )
 
     def __str__(self):
-        return f"GROUP ITEM : {self.itemGroupName}"
+        return f"{self.itemGroupName}"
 
 
 class Item(models.Model):
@@ -134,7 +132,7 @@ class Aircraft(models.Model):
     )
 
     def __str__(self):
-        return f"TAIL NUMBER : {self.tailNumber} TYPE : {self.relatedAircraftType} SUB_TYPE : {self.aircraftSubType}"
+        return f"{self.tailNumber}, {self.relatedAircraftType}"
 
 
 class FuelFlow(models.Model):
@@ -156,11 +154,10 @@ class FuelFlow(models.Model):
         Item, on_delete=models.CASCADE, null=True, blank=True
     )
     isInternal = models.BooleanField()
-    # TODO: incorrect structure, revise
     fuelFlow = JSONField(default=dict)
 
     def __str__(self):
-        return f"FUEL-FLOW. AIRCRAFT TYPE : {self.relatedAircraftType} ; DESCRIPTION : {self.fuelDescription}"
+        return f"FuelFlow of {self.relatedAircraftType}"
 
 
 class Envelope(models.Model):
@@ -188,4 +185,4 @@ class Envelope(models.Model):
     envolopeData = JSONField(default=dict)
 
     def __str__(self):
-        return f"ENVELOPE. AIRCRAFT TYPE : {self.relatedAircraftType} ; TYPE : {self.envelopeType}"
+        return f"Envelope of {self.relatedAircraftType}. Type : {self.envelopeType}"
