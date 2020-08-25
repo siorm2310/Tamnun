@@ -28,6 +28,8 @@ class PlatformSelectionView(ListView):
 
 
 def UAVView(request):
+    # TODO: 1. query for info from server
+    # TODO: 2. pass to server
     pass
 
 

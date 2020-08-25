@@ -128,7 +128,7 @@ class Aircraft(models.Model):
     relatedAircraftType = models.ForeignKey(
         AircraftType, on_delete=models.CASCADE)
     relatedAircraftSubType = models.ForeignKey(
-        AircraftSubType, on_delete=models.CASCADE, null=True
+        AircraftSubType, on_delete=models.CASCADE, blank=True, null=True
     )
 
     def __str__(self):

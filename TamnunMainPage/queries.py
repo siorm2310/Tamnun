@@ -41,18 +41,20 @@ class ViewQueries:
         return data
 
 
-def get_WB_calc_data(tms):
-    aircraftType = get_object_or_404(AircraftType, TMS=tms)
-    try:
-        fuelFlows = FuelFlow.objects.filter(relatedAircraftType=aircraftType).values()
-        envelopes = Envelope.objects.filter(relatedAircraftType=aircraftType).values()
-    except:
-        print("Error retirieving fuelflows and envelopes")
+class WBQueries:
+    @staticmethod
+    def get_WB_calc_data(tms):
+        aircraftType = get_object_or_404(AircraftType, TMS=tms)
+        try:
+            fuelFlows = FuelFlow.objects.filter(relatedAircraftType=aircraftType).values()
+            envelopes = Envelope.objects.filter(relatedAircraftType=aircraftType).values()
+        except:
+            print("Error retirieving fuelflows and envelopes")
 
-    data = {
-        "aircraftType": aircraftType,
-        "fuelFlows": list(fuelFlows),
-        "envelopes": list(envelopes),
-    }
+        data = {
+            "aircraftType": aircraftType,
+            "fuelFlows": list(fuelFlows),
+            "envelopes": list(envelopes),
+        }
 
-    return data
+        return data

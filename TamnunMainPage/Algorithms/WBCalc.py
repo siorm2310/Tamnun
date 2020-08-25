@@ -1,12 +1,11 @@
 """This file serves as a hub for the Weight & Balance algorithms. import this file to a view for
     access to these algorithms"""
+# from ..queries import WBQueries
+# from .DerivativeGenerator import Derivative_Generator
+from DerivativeGenerator import Derivative_Generator
+import DerivativeGenerator
 import json
 import numpy as np
-from .DerivativeGrenerator import Derivative_Grenerator
-from .LimitsFinder import fuel_limits_finder
-import operator
-
-from ..queries import get_WB_calc_data
 
 
 def apply_safety_factors(W_SF, CG_SF, weight, CG, Tail_num, MAC=None):
@@ -70,7 +69,7 @@ def list_discrete_configs(client_request):
         discrete_configs [list] -- list of dicts
     """
     try:
-        discrete_configs = Derivative_Grenerator(client_request)
+        discrete_configs = Derivative_Generator(client_request)
     except json.JSONDecodeError as error:
         print("Error deserialize client request", error)
         return {}
@@ -90,16 +89,13 @@ def add_config_to_fuelflow(fuelflow, config_data):
         fuelflow_weight = fuelflow["weight"]
         fuelflow_moment_long = fuelflow["moment_long"]
         config_moment_long = config_data["Weight"] * config_data["CG"]
-        # config_moment_long = config_data["Weight"]
     except KeyError:
         print("KeyError: check if 'weight','moment_long','CG' keys exist ")
         return config_data
     config_moment_long = config_data["Weight"] * config_data["CG"]
-    # config_moment_long = config_data["Weight"]
     centrogram = {
         "name": config_data["items"], "weight": [], "cg_long": []}
     config_moment_long = config_data["Weight"] * config_data["CG"]
-    # config_moment_long = config_data["Weight"]
 
     for weight, moment in list(zip(fuelflow_weight, fuelflow_moment_long)):
         centrogram["weight"].append(weight + config_data["Weight"])
@@ -119,7 +115,8 @@ def create_centrograms_from_configs(config, fuelflow):
 
 
 def filter_centrograms(centrograms, envelope):
-    pass
+    limits = LimitsFinder.fuel_limits_finder(envelope, centrograms)
+    return limits
 
 
 def get_most_strict_limits(limits):
@@ -152,4 +149,12 @@ def perform_WB_calc(parsed_client_request):
 
     discrete_configs = list_discrete_configs(parsed_client_request)
     centrograms = create_centrograms_from_configs(discrete_configs, backend_calc_data["fuelFlows"])
-    return []
+    limits = filter_centrograms(centrograms, envelope)
+    strict_limits = get_most_strict_limits(limits)
+    ret = {
+        "takeoff fuel": strict_limits[0],
+        "landing fuel": strict_limits[1],
+        "units": "קג",
+        "centrogram": centrograms
+    }
+    return ret

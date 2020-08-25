@@ -50,10 +50,11 @@ def check_point_in_polygon(polygon_input, point_input):
     Returns:
         [boolean] -- True if within polygon, false otherwise
     """
+    DISTANCE_TOL = 0.01
     polygon = Polygon(polygon_input)
     point = Point(point_input)
 
-    if polygon.contains(point) or polygon.intersects(point) or polygon.touches(point) or polygon.distance(point) <= 0.01:
+    if polygon.contains(point) or polygon.intersects(point) or polygon.touches(point) or polygon.distance(point) <= DISTANCE_TOL:
         return True
     return False
 
