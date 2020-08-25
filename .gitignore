@@ -1,6 +1,5 @@
 /*/__pycache__/
 *.pyc
 .vscode/
-TamnunMainPage/migrations/
-users/migrations/
+/*/migrations/
 /venv/
