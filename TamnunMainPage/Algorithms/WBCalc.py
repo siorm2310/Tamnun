@@ -6,7 +6,29 @@ from DerivativeGenerator import Derivative_Generator
 import DerivativeGenerator
 import json
 import numpy as np
+# from ..queries import WBQueries
+# import ..queries
 
+
+# from queries
+from django.shortcuts import get_object_or_404, get_list_or_404
+from modelsA import *
+import modelsA
+def get_WB_calc_data(tms):
+        aircraftType = get_object_or_404(AircraftType, TMS=tms)
+        try:
+            fuelFlows = FuelFlow.objects.filter(relatedAircraftType=aircraftType).values()
+            envelopes = Envelope.objects.filter(relatedAircraftType=aircraftType).values()
+        except:
+            print("Error retirieving fuelflows and envelopes")
+
+        data = {
+            "aircraftType": aircraftType,
+            "fuelFlows": list(fuelFlows),
+            "envelopes": list(envelopes),
+        }
+
+        return data
 
 def apply_safety_factors(W_SF, CG_SF, weight, CG, Tail_num, MAC=None):
     """Applies safety factors to TN data
@@ -139,7 +161,12 @@ def perform_WB_calc(parsed_client_request):
     """
     # TODO: get data from server
 
-    backend_calc_data = get_WB_calc_data(tms=parsed_client_request["TMS"])
+    # For tests without DB only
+    W_SF=0.5 
+    CG_SF=0.5
+    envelope=[[0,0.5],[0,1],[0.5,2],[1.5,2],[2,1],[2,0.5]]
+
+    backend_calc_data =WBQueries.get_WB_calc_data(tms=parsed_client_request["TMS"])
 
     aircrafts = parsed_client_request["aircrafts"]
     for tail_num, weight, CGlong in zip(aircrafts[0]["Tail_num"], aircrafts[1]["Weight"], aircrafts[2]["CG"]):
