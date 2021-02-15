@@ -4,6 +4,8 @@
 # from .DerivativeGenerator import Derivative_Generator
 from DerivativeGenerator import Derivative_Generator
 import DerivativeGenerator
+from LimitsFinder import fuel_limits_finder
+import LimitsFinder
 import json
 import numpy as np
 # from ..queries import WBQueries
@@ -11,24 +13,24 @@ import numpy as np
 
 
 # from queries
-from django.shortcuts import get_object_or_404, get_list_or_404
-from modelsA import *
-import modelsA
-def get_WB_calc_data(tms):
-        aircraftType = get_object_or_404(AircraftType, TMS=tms)
-        try:
-            fuelFlows = FuelFlow.objects.filter(relatedAircraftType=aircraftType).values()
-            envelopes = Envelope.objects.filter(relatedAircraftType=aircraftType).values()
-        except:
-            print("Error retirieving fuelflows and envelopes")
+# from django.shortcuts import get_object_or_404, get_list_or_404
+# from modelsA import *
+# import modelsA
+# def get_WB_calc_data(tms):
+#         aircraftType = get_object_or_404(AircraftType, TMS=tms)
+#         try:
+#             fuelFlows = FuelFlow.objects.filter(relatedAircraftType=aircraftType).values()
+#             envelopes = Envelope.objects.filter(relatedAircraftType=aircraftType).values()
+#         except:
+#             print("Error retirieving fuelflows and envelopes")
 
-        data = {
-            "aircraftType": aircraftType,
-            "fuelFlows": list(fuelFlows),
-            "envelopes": list(envelopes),
-        }
+#         data = {
+#             "aircraftType": aircraftType,
+#             "fuelFlows": list(fuelFlows),
+#             "envelopes": list(envelopes),
+#         }
 
-        return data
+#         return data
 
 def apply_safety_factors(W_SF, CG_SF, weight, CG, Tail_num, MAC=None):
     """Applies safety factors to TN data
@@ -54,14 +56,18 @@ def apply_safety_factors(W_SF, CG_SF, weight, CG, Tail_num, MAC=None):
             Tail_num + " +-",
         ]
     }
-
+    print(tn)
     if MAC is not None:
         CG_SF_MAC = (CG_SF / 100) * MAC
+        # ak=float(1+W_SF/100)
+        
 
-        p1 = [weight * (1 + (W_SF / 100)), CG + CG_SF_MAC]  # heavy, aft
-        p2 = [weight * (1 - (W_SF / 100)), CG + CG_SF_MAC]  # light, aft
-        p3 = [weight * (1 - (W_SF / 100)), CG - CG_SF_MAC]  # light, forward
-        p4 = [weight * (1 + (W_SF / 100)), CG - CG_SF_MAC]  # heavy, forward
+
+        # print(type(CG))
+        p1 = [(float(weight) * float(1 + (W_SF / 100))), float(CG) + CG_SF_MAC]  # heavy, aft
+        p2 = [float(weight) * float((1 - (W_SF / 100))), float(CG) + CG_SF_MAC]  # light, aft
+        p3 = [float(weight) * float((1 - (W_SF / 100))), float(CG) - CG_SF_MAC]  # light, forward
+        p4 = [float(weight) * float(1 + (W_SF / 100)), float(CG) - CG_SF_MAC]  # heavy, forward
 
         return [
             tn,
@@ -69,10 +75,10 @@ def apply_safety_factors(W_SF, CG_SF, weight, CG, Tail_num, MAC=None):
             {"CG": [p1[1], p2[1], p3[1], p4[1]]},
         ]
 
-    p1 = [weight * (1 + (W_SF / 100)), CG + CG_SF]
-    p2 = [weight * (1 - (W_SF / 100)), CG + CG_SF]
-    p3 = [weight * (1 - (W_SF / 100)), CG - CG_SF]
-    p4 = [weight * (1 + (W_SF / 100)), CG - CG_SF]
+    p1 = [float(weight) * float(1 + (W_SF / 100)), float(CG) + CG_SF]
+    p2 = [float(weight) * float(1 - (W_SF / 100)), float(CG) + CG_SF]
+    p3 = [float(weight) * float(1 - (W_SF / 100)), float(CG) - CG_SF]
+    p4 = [float(weight) * float(1 + (W_SF / 100)), float(CG) - CG_SF]
 
     return [
         tn,
@@ -108,8 +114,8 @@ def list_discrete_configs(client_request):
 
 def add_config_to_fuelflow(fuelflow, config_data):
     try:
-        fuelflow_weight = fuelflow["weight"]
-        fuelflow_moment_long = fuelflow["moment_long"]
+        fuelflow_weight = fuelflow[0]["weight"]
+        fuelflow_moment_long = fuelflow[0]["moment_long"]
         config_moment_long = config_data["Weight"] * config_data["CG"]
     except KeyError:
         print("KeyError: check if 'weight','moment_long','CG' keys exist ")
@@ -120,11 +126,13 @@ def add_config_to_fuelflow(fuelflow, config_data):
     config_moment_long = config_data["Weight"] * config_data["CG"]
 
     for weight, moment in list(zip(fuelflow_weight, fuelflow_moment_long)):
+        # print(weight)
         centrogram["weight"].append(weight + config_data["Weight"])
         centrogram["cg_long"].append(
             ((moment + config_moment_long) /
                 (weight + config_data["Weight"]))
         )
+    # print(centrogram)
     return centrogram
 
 
@@ -135,15 +143,39 @@ def create_centrograms_from_configs(config, fuelflow):
             centrograms.append(add_config_to_fuelflow(fuelflow, derivative))
     return centrograms
 
+def centrograms_builder(centrogram):
+    centrograms=[]
+    for j in range(len('weight')):
+        centrograms.append([centrogram['weight'][j],centrogram['cg_long'][j]])
+    return centrograms
 
+# def envelope_from_query()
+#     envjson=open("C:\Users\Gilad Timar\Documents\Tamnun\Tamnun\TamnunMainPage\DummyData\EnvelopeQuery1.json", 'r')
+#     env_data=json.load(envjson)
+#     envelope=[env_data["Weight"],env_data["CG"]]
+#     return envelope
 def filter_centrograms(centrograms, envelope):
-    limits = LimitsFinder.fuel_limits_finder(envelope, centrograms)
+    envelopes=[]
+    limits=[]
+    # print(len(envelope[0]))
+    for i in range(len(envelope[0])):
+        envelopes.append([envelope[0][i],envelope[1][i]])
+    # centrograms=centrograms_builder(centrograms)
+    # print(centrograms)
+    # for j in range(len(centrogram['weight'])):
+    #     centrograms.append(centrogram['weight'][j],centrogram['cg_long'][j])
+    for dev in centrograms:
+        centrogram=centrograms_builder(dev)
+        print(centrogram)
+        limits.append(LimitsFinder.fuel_limits_finder(envelopes, centrogram))
+    # print(limits)
     return limits
 
 
 def get_most_strict_limits(limits):
-    takeoff_limits = [limit["takeoff_fuel"] for limit in limits]
-    landing_limits = [limit["landing_fuel"] for limit in limits]
+    # for limit in limits
+    takeoff_limits = [limit[0] for limit in limits]
+    landing_limits = [limit[-1] for limit in limits]
 
     return [min(takeoff_limits), max(landing_limits)]
 
@@ -160,23 +192,41 @@ def perform_WB_calc(parsed_client_request):
 
     """
     # TODO: get data from server
+    # TODO: calculatre for both long and lat
 
-    # For tests without DB only
-    W_SF=0.5 
-    CG_SF=0.5
-    envelope=[[0,0.5],[0,1],[0.5,2],[1.5,2],[2,1],[2,0.5]]
+    
+        #                                                      #
+    # As of this point the code is writen for long SF without a DB #
+        #                                                      #    
 
-    backend_calc_data =WBQueries.get_WB_calc_data(tms=parsed_client_request["TMS"])
+    # json data load
+    datajson=open("C:/Users/Gilad Timar/Documents/Tamnun/Tamnun/TamnunMainPage/DummyData/platformQueryDataWBC1.json", 'r')
+    platform=json.load(datajson)
+    W_SF=platform["SF_W"]
+    CG_SF=platform["SF_CGLong"]
+    MAC=platform["MAC"]
+    envjson=open("C:/Users/Gilad Timar/Documents/Tamnun/Tamnun/TamnunMainPage/DummyData/EnvelopeQueryWBC1.json", 'r')
+    env_data=json.load(envjson)
+    envelope=[env_data["envolopeData"]["Weight"],env_data["envolopeData"]["CG"]]
+    ffjson=open("C:/Users/Gilad Timar/Documents/Tamnun/Tamnun/TamnunMainPage/DummyData/fuelFlowWBC1.json",'r')
+    fuelflow=json.load(ffjson)
+    # print(fuelflow[0]["weight"])
+    
+    
+    # backend_calc_data =get_WB_calc_data(tms=parsed_client_request["TMS"])
 
     aircrafts = parsed_client_request["aircrafts"]
     for tail_num, weight, CGlong in zip(aircrafts[0]["Tail_num"], aircrafts[1]["Weight"], aircrafts[2]["CG"]):
         SF_aircrafts = apply_safety_factors(W_SF, CG_SF, weight, CGlong, tail_num, MAC=MAC)
-    parsed_client_request.pop("aircafts")
+    # parsed_client_request.pop("aircrafts")
     parsed_client_request["aircrafts"] = SF_aircrafts
+    # print(parsed_client_request)
 
     discrete_configs = list_discrete_configs(parsed_client_request)
-    centrograms = create_centrograms_from_configs(discrete_configs, backend_calc_data["fuelFlows"])
-    limits = filter_centrograms(centrograms, envelope)
+    # print(discrete_configs)
+    # centrograms = create_centrograms_from_configs(discrete_configs, backend_calc_data["fuelFlows"])
+    centrograms=create_centrograms_from_configs(discrete_configs,fuelflow)
+    limits = filter_centrograms(centrograms,envelope)
     strict_limits = get_most_strict_limits(limits)
     ret = {
         "takeoff fuel": strict_limits[0],
@@ -185,3 +235,7 @@ def perform_WB_calc(parsed_client_request):
         "centrogram": centrograms
     }
     return ret
+# datajson=open("C:/Users/Gilad Timar/Documents/Tamnun/Tamnun/TamnunMainPage/DummyData/platformQueryData.json", 'r')
+datajson=open("C:/Users/Gilad Timar/Documents/Tamnun/Tamnun/TamnunMainPage/DummyData/WBCalctest1.json", 'r')
+WB=perform_WB_calc(json.load(datajson))
+# print(WB)

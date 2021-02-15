@@ -5,8 +5,8 @@ import json
 import numpy as np
 import scipy
 import matplotlib as mpl
-from WBCalc import perform_WB_calc
-import WBCalc
+from ..WBCalc_2 import perform_WB_calc
+import ..WBCalc
 
 
 class WBtest(unittest.TestCase):

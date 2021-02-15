@@ -4,6 +4,7 @@ import numpy as np
 import math
 from shapely.geometry.polygon import Polygon
 from shapely.geometry import Point
+import json
 
 
 def index(array, item):
@@ -42,6 +43,7 @@ def centrogram_spacing(centrogram, desired_interval):
 
 
 def check_point_in_polygon(polygon_input, point_input):
+    # ###
     """Checks whether a point is within a closed polygon, according to BAKAT's definition
 
     Arguments:
@@ -51,8 +53,11 @@ def check_point_in_polygon(polygon_input, point_input):
         [boolean] -- True if within polygon, false otherwise
     """
     DISTANCE_TOL = 0.01
+    # print(point_input['weight'])
     polygon = Polygon(polygon_input)
+    print(polygon)
     point = Point(point_input)
+    print(point_input)
 
     if polygon.contains(point) or polygon.intersects(point) or polygon.touches(point) or polygon.distance(point) <= DISTANCE_TOL:
         return True
@@ -92,11 +97,17 @@ def bisection(n1, n2, fuel_inside_envelope, change_points):
 
 
 def fuel_limits_finder(envelope, centrogram):
-
+# ###
     centrogram_status = []
-
+    print(centrogram)
     for point in centrogram:
+        # print(point)
+    #     points=[]
+    #     for i in range(len(Point['weight'])):
+    #         points.append([Point['weight'][i],Point['cg_long'][i]])
+    # for point in points:
         centrogram_status.append(check_point_in_polygon(envelope, point))
+        # print(centrogram_status)
 
     if all(centrogram_status) == True:
         print("Full fuel")
@@ -105,8 +116,26 @@ def fuel_limits_finder(envelope, centrogram):
     if all(centrogram_status) == False:
         print("No fuel")
         return [0, 0]
+    # if all(centrogram_status) == True:
+    #     print("Full fuel")
+    #     return [centrogram[0], centrogram[-1]]
+
+    # if centrogram_status.any() == False:
+    #     print("No fuel")
+    #     return [0, 0]
 
     change_points = np.zeros(shape=(1, 2))
-    fuel_limits = bisection(
-        0, centrogram_status.__len__(), centrogram_status, change_points)
+    fuel_limits = bisection(0, centrogram_status.__len__(), centrogram_status, change_points)
     return fuel_limits
+
+# 
+# to change WBC that Limits will work for every derivative indevdualy #
+# 
+
+# Test Sapir
+datajson=open("C:/Users/Gilad Timar/Documents/Tamnun/Tamnun/TamnunMainPage/DummyData/Test_Sapir_1.json", 'r')
+envjson=open("C:/Users/Gilad Timar/Documents/Tamnun/Tamnun/TamnunMainPage/DummyData/EnvelopeQueryWBC1.json", 'r')
+env_data=json.load(envjson)
+envelope=[env_data["envolopeData"]["Weight"],env_data["envolopeData"]["CG"]]
+fuellim=fuel_limits_finder(envelope,datajson)
+print(fuellim)
