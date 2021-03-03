@@ -1,0 +1,28 @@
+{% extends 'TamnunMainPage/layout.html' %}
+{% load static %}
+{% block title %} Zik view {% endblock %}
+
+{% block static_files %}
+<link rel="stylesheet" href="{% static 'TamnunMainPage/css/UAV.css' %}">
+<script defer type = "text/javascript" src="{% static 'TamnunMainPage/js/zik_view.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<nav class="navbar container-fluid" >
+    <div id="navbar-btns">
+      <img src="{% static 'TamnunMainPage/Logo.png' %}" alt="logo" srcset="" id="logo">
+      <div class="btn-group">
+          <button type="button" class="btn btn-primary" id="tail_number">מספרי זנב</button>
+          <button type="button" class="btn btn-primary" id="items">פריטי משימה</button>
+          <button type="button" class="btn btn-primary" id="presets" disabled>פריסטים</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid text-center" id="main">
+    <div class="row content">
+        <div class="col menus">Hello from menus</div>
+        <div class="col results">Hello from results</div>
+    </div>
+</div>
+{% endblock %}

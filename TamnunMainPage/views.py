@@ -27,21 +27,12 @@ class PlatformSelectionView(ListView):
     model = AircraftType
 
 
-def UAVView(request):
-    # TODO: 1. query for info from server
-    # TODO: 2. pass to server
-    pass
+def zik_view(request):
+    context = {"a": 0, "b": 1}
+    return render(request, "TamnunMainPage/zik_view.html", context=context)
 
 
-def FighterView(request):
-    pass
-
-
-def CargoView(request):
-    pass
-
-
-def HeavyCargoView(request):
+def Weight_and_balance_api(request):
     pass
 
 
@@ -53,7 +44,7 @@ def general_calc_tamnun(request, methods=["POST", "GET"]):
     3. render template with the data
     """
 
-    return render(request, "TamnunMainPage/UAV.html")
+    return render(request, "TamnunMainPage/zik_view.html")
 
 
 def display_main_page(request):
