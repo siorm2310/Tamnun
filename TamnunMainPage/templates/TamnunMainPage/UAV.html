@@ -13,27 +13,25 @@
 
 {% block body %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
-  <div class="container-fluid">
+<nav class="navbar container-fluid" >
+  <div id="navbar-btns">
     <img src="{% static 'TamnunMainPage/Logo.png' %}" alt="logo" srcset="" id="logo">
-    <div class="btn-group-lg">
+    <div class="btn-group">
         <button type="button" class="btn btn-primary" id="tail_number">מספרי זנב</button>
         <button type="button" class="btn btn-primary" id="items">פריטי משימה</button>
         <button type="button" class="btn btn-primary" id="presets" disabled>פריסטים</button>
     </div>
-
-    <form class="form-inline" action="" method="post">
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="חפש">
-      </div>
-      <button type="submit" class="btn btn-primary">חפש</button>
-    </form>
   </div>
+
+    <form class="form-inline" action="" method="post" id="search-form">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="חפש פריט">
+      </div>
+      <button type="submit" class="btn btn-primary" disabled>חפש</button>
+    </form>
 </nav>
 
-<br>
-
-<div class="container-fluid text-center">
+<div class="container-fluid text-center" id="main">
         <div class="row content">
             <div class="col-sm-3 sidenav">
               <!-- This is the left side menu which displays the results of the calculations -->
