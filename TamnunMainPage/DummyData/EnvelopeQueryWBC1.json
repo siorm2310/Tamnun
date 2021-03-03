@@ -1,0 +1,11 @@
+{
+    "envelopeName": "Aerial",
+    "relatedAircraftType": "F-17",
+    "relatedAircraftSubType": null,
+    "envelopeType": "LONG",
+    "envolopeData": {
+      "Weight": [4000, 6000, 6000, 6000, 6000, 4000, 4000],
+      "CG": [215, 250, 270, 340, 350, 350, 215]
+    }
+  }
+

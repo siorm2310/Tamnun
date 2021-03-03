@@ -450,8 +450,9 @@ def Derivative_Generator(items):
         DerivativeList.append({"Tail Number": plane["Tail_num"][i], "Derivatives": DerPerPlane})
     return DerivativeList
 
-# # Main
+# Main
 # datajson=open("C:/Users/Gilad Timar/Documents/עבודה/scripts/dummyClientRequest4.json", 'r')
-# items=json.load(datajson)
-# DerivativeList=Derivative_Generator(items)
-# print(DerivativeList)
+datajson=open("C:/Users/Gilad Timar/Documents/Tamnun/Tamnun/TamnunMainPage/DummyData/dummyClientRequestExample.json", 'r')
+items=json.load(datajson)
+DerivativeList=Derivative_Generator(items)
+print(DerivativeList)
