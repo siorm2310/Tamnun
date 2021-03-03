@@ -3,3 +3,4 @@
 .vscode/
 /*/migrations/
 /venv/
+db.sqlite3
