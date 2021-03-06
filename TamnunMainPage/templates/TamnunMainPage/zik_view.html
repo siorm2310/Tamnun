@@ -3,7 +3,7 @@
 {% block title %} Zik view {% endblock %}
 
 {% block static_files %}
-<link rel="stylesheet" href="{% static 'TamnunMainPage/css/UAV.css' %}">
+<link rel="stylesheet" href="{% static 'TamnunMainPage/css/zik_view.css' %}">
 <script defer type = "text/javascript" src="{% static 'TamnunMainPage/js/zik_view.js' %}"></script>
 {% endblock %}
 
@@ -11,18 +11,39 @@
 <nav class="navbar container-fluid" >
     <div id="navbar-btns">
       <img src="{% static 'TamnunMainPage/Logo.png' %}" alt="logo" srcset="" id="logo">
-      <div class="btn-group">
-          <button type="button" class="btn btn-primary" id="tail_number">מספרי זנב</button>
-          <button type="button" class="btn btn-primary" id="items">פריטי משימה</button>
-          <button type="button" class="btn btn-primary" id="presets" disabled>פריסטים</button>
-      </div>
     </div>
   </nav>
 
   <div class="container-fluid text-center" id="main">
     <div class="row content">
-        <div class="col menus">Hello from menus</div>
+        <div class="col menus">
+          <div class="card">
+            <ul class="list-group list-group-flush">
+              {% for tail in tailNumbers %}
+              <li class="list-group-item">
+                  <input type="checkbox" name="{{tail.TN}}" class="intput-{{tail.TN}}">
+                  <label for="{{tail.TN}}">{{tail.TN}}</label>
+                  <button class="btn btn-sm btn-primary" data-toggle="collapse" type="button" 
+                   data-target="#collapse_{{tail.TN}}" aria-expanded="false" aria-controls="{{tail.TN}}">נתונים</button>
+                  <div class="collapse" id="collapse_{{tail.TN}}">
+                    <div class="card card-body">
+                      <p>משקל : {{tail.Weight}} [ק"ג]</p>
+                      <p>מרכז כובד : {{tail.CGlong}} [ק"ג]</p>
+                    </div>
+                  </div>
+              </li>          
+              {% endfor %}
+            </ul>
+          </div>
+
+
+        </div>
+        <div class="col menus"></div>
         <div class="col results">Hello from results</div>
+
+    </div>
+    <div class="row content">
+      <button class = "btn btn-primary">חשב!</button>
     </div>
 </div>
 {% endblock %}

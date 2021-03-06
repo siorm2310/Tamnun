@@ -1,0 +1,53 @@
+:root {
+  --prim-color: #969a97;
+  --sec-color: #e1d89f;
+  --tri-color: #ab2789;
+}
+
+#main {
+  background-color: var(--sec-color);
+  direction: rtl;
+}
+
+nav {
+  direction: rtl;
+  margin-bottom: 5px;
+  background-color: var(--prim-color);
+  display: inline-flex;
+  justify-content: space-between;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+#search-form {
+  display: flex;
+  justify-content: end;
+  align-content: center;
+}
+
+#footer_calc > * {
+  justify-content: center;
+  direction: rtl;
+}
+
+.btn {
+  direction: rtl;
+}
+
+#logo {
+  /* size is relative to containing block */
+  width: 5rem;
+}
+
+#schematic {
+  width: 70%;
+}
+
+.modal {
+  /* TODO: correct orientiation of modal */
+  direction: rtl;
+}
+
+.table {
+  direction: rtl;
+}
