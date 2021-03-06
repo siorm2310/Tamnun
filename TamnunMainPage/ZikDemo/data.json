@@ -1,0 +1,112 @@
+{
+	"tailNumber": {
+			"251": {
+				"Weight": 398.9,
+				"CGlong": 313.14,
+				"CGlat": -0.3
+			},
+			"239": {
+				"Weight": 301.8,
+				"CGlong": 301.77,
+				"CGlat": 0.76
+			},
+			"148": {
+				"Weight": 320.9,
+				"CGlong": 317.81,
+				"CGlat": 0.44
+			},
+			"222": {
+				"Weight": 367.1,
+				"CGlong": 309.25,
+				"CGlat": 0.08
+			},
+			"142": {
+				"Weight": 393,
+				"CGlong": 317.14,
+				"CGlat": 0.9
+			}
+    },
+
+	"Items": 
+			"New Zealand" : {
+				"Weight": 28.5,
+				"CGlong": 304.19,
+				"CGlat": 0.19
+			},
+			"Australia": {
+				"Weight": 32.3,
+				"CGlong": 315.02,
+				"CGlat": 0.62
+			},
+		{
+			"China": {
+				"Weight": 2.1,
+				"CGlong": 307.32,
+				"CGlat": 1.45
+			}
+		},
+		{
+			"Mauritius": {
+				"Weight": 36,
+				"CGlong": 311.48,
+				"CGlat": 0.1
+			}
+		},
+		{
+			"Burundi": {
+				"Weight": 17.2,
+				"CGlong": 312.53,
+				"CGlat": 0.17
+			}
+		},
+		{
+			"Yemen": {
+				"Weight": 9.1,
+				"CGlong": 309.4,
+				"CGlat": -0.48
+			}
+		},
+		{
+			"Netherlands": {
+				"Weight": 8.3,
+				"CGlong": 314.05,
+				"CGlat": 0.94
+			}
+		},
+		{
+			"United Kingdom": {
+				"Weight": 16.4,
+				"CGlong": 320.65,
+				"CGlat": 0.6
+			}
+		}
+	,
+	"Envelopes": [
+		{
+			"Ariela": {
+				"Weight": 22.7,
+				"CGlong": 314.18
+			}
+		},
+		{
+			"Binny": {
+				"Weight": 18.1,
+				"CGlong": 317.75
+			}
+		}
+	],
+	"FuelFlows": [
+		{
+			"Mariann": {
+				"Weight": 39,
+				"CGlong": 320.32
+			}
+		},
+		{
+			"Abbie": {
+				"Weight": 22.4,
+				"CGlong": 320.25
+			}
+		}
+	]
+}
