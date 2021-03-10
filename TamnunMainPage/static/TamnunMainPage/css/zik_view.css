@@ -10,28 +10,12 @@
 }
 
 nav {
-  direction: rtl;
   margin-bottom: 5px;
   background-color: var(--prim-color);
   display: inline-flex;
   justify-content: space-between;
   align-content: center;
   flex-wrap: wrap;
-}
-
-#search-form {
-  display: flex;
-  justify-content: end;
-  align-content: center;
-}
-
-#footer_calc > * {
-  justify-content: center;
-  direction: rtl;
-}
-
-.btn {
-  direction: rtl;
 }
 
 #logo {
@@ -43,11 +27,21 @@ nav {
   width: 70%;
 }
 
-.modal {
-  /* TODO: correct orientiation of modal */
+.table {
   direction: rtl;
 }
 
-.table {
-  direction: rtl;
+.menus {
+  overflow-y: auto;
+  height: 50vh;
+}
+
+.buttons {
+  justify-content: center;
+  padding: 5px;
+}
+
+.items {
+  display: flex;
+  justify-content: space-evenly;
 }

@@ -1,49 +1,95 @@
-{% extends 'TamnunMainPage/layout.html' %}
-{% load static %}
-{% block title %} Zik view {% endblock %}
+{% extends 'TamnunMainPage/layout.html' %} {% load static %} {% block title %}
+Zik view {% endblock %} {% block static_files %}
+<link rel="stylesheet" href="{% static 'TamnunMainPage/css/zik_view.css' %}" />
+<script
+  defer
+  type="text/javascript"
+  src="{% static 'TamnunMainPage/js/zik_view.js' %}"
+></script>
+{% endblock %} {% block body %}
+<nav class="navbar container-fluid">
+  <img
+    src="{% static 'TamnunMainPage/Logo.png' %}"
+    alt="logo"
+    srcset=""
+    id="logo"
+  />
+  <h1>תמנון - מסך חישוב תצורות זיק</h1>
+</nav>
 
-{% block static_files %}
-<link rel="stylesheet" href="{% static 'TamnunMainPage/css/zik_view.css' %}">
-<script defer type = "text/javascript" src="{% static 'TamnunMainPage/js/zik_view.js' %}"></script>
-{% endblock %}
-
-{% block body %}
-<nav class="navbar container-fluid" >
-    <div id="navbar-btns">
-      <img src="{% static 'TamnunMainPage/Logo.png' %}" alt="logo" srcset="" id="logo">
+<div class="container-fluid text-center" id="main">
+  <div class="row content">
+    <div class="col col-3 menus">
+      <div class="card">
+        <ul class="list-group list-group-flush">
+          {% for tail in tailNumbers %}
+          <li class="list-group-item">
+            <input
+              type="checkbox"
+              name="{{tail.TN}}"
+              class="input-{{tail.TN}}"
+            />
+            <label for="{{tail.TN}}">{{tail.TN}}</label>
+            <button
+              class="btn btn-sm btn-primary"
+              data-toggle="collapse"
+              type="button"
+              data-target="#collapse_{{tail.TN}}"
+              aria-expanded="false"
+              aria-controls="{{tail.TN}}"
+            >
+              נתונים
+            </button>
+            <div class="collapse" id="collapse_{{tail.TN}}">
+              <div class="card card-body">
+                <p>משקל : {{tail.Weight}} [ק"ג]</p>
+                <p>מרכז כובד : {{tail.CGlong}} [ס"מ]</p>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
-  </nav>
-
-  <div class="container-fluid text-center" id="main">
-    <div class="row content">
-        <div class="col menus">
-          <div class="card">
-            <ul class="list-group list-group-flush">
-              {% for tail in tailNumbers %}
-              <li class="list-group-item">
-                  <input type="checkbox" name="{{tail.TN}}" class="intput-{{tail.TN}}">
-                  <label for="{{tail.TN}}">{{tail.TN}}</label>
-                  <button class="btn btn-sm btn-primary" data-toggle="collapse" type="button" 
-                   data-target="#collapse_{{tail.TN}}" aria-expanded="false" aria-controls="{{tail.TN}}">נתונים</button>
-                  <div class="collapse" id="collapse_{{tail.TN}}">
-                    <div class="card card-body">
-                      <p>משקל : {{tail.Weight}} [ק"ג]</p>
-                      <p>מרכז כובד : {{tail.CGlong}} [ק"ג]</p>
-                    </div>
-                  </div>
-              </li>          
-              {% endfor %}
-            </ul>
+    <div class="col col-4 menus">
+      <ul class="list-group list-group-flush">
+        {% for item in items %}
+        <li class="list-group-item items">
+          <input
+            type="checkbox"
+            name="{{item.name}}"
+            class="input-{{item.name}}"
+          />
+          <label for="{{item.name}}">{{item.name}}</label>
+          <button
+            class="btn btn-sm btn-primary"
+            data-toggle="collapse"
+            type="button"
+            data-target="#collapse_{{item.id}}"
+            aria-expanded="false"
+            aria-controls="{{item.id}}"
+          >
+            נתונים
+          </button>
+          <div class="collapse" id="collapse_{{item.id}}">
+            <div class="card card-body">
+              <p>משקל : {{item.Weight}} [ק"ג]</p>
+              <p>מרכז כובד : {{item.CGlong}} [ס"מ]</p>
+            </div>
           </div>
-
-
-        </div>
-        <div class="col menus"></div>
-        <div class="col results">Hello from results</div>
-
+        </li>
+        {% endfor %}
+      </ul>
     </div>
-    <div class="row content">
-      <button class = "btn btn-primary">חשב!</button>
+    <div class="col results">
+      {% include "TamnunMainPage/_results_bar.html" %}
     </div>
+  </div>
+  <div class="row content buttons">
+    <button class="btn btn-lg btn-primary">הצג פריטים נבחרים</button>
+  </div>
+  <div class="row content buttons">
+    <button class="btn btn-lg btn-success">חשב מגבלות תצורה</button>
+  </div>
 </div>
 {% endblock %}

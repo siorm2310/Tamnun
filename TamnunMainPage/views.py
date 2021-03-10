@@ -11,14 +11,15 @@ from .queries import ViewQueries
 
 def zik_view(request):
     context = {"a": 0, "b": 1}
-    with open("TamnunMainPage\ZikDemo\data.json",'r') as datafile:
-        data = json.loads(datafile.read())
+    with open("TamnunMainPage\ZikDemo\data.json", 'r') as datafile:
+        data = json.loads(datafile.read(), encoding="utf-8")
     return render(request, "TamnunMainPage/zik_view.html", context=data)
+
 
 def display_main_page(request):
     """This view renders the Configuration builder view,
      based on the selected AircraftType selected in the PlatformSelectionView
-
+x`
     Arguments:
         request {WSGI request} -- Djagno's request object
         TMS     {string}       -- string representing the TMS, in XX-XX-XX format
@@ -28,4 +29,3 @@ def display_main_page(request):
     """
     context = ViewQueries.get_frontend_data(tms="11-11-11")
     return render(request, "TamnunMainPage/UAV.html", context)
-

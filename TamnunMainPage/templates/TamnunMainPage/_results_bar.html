@@ -7,9 +7,7 @@
           {% if fuel_limits.takeoff %} {{ fuel_limits.takeoff }} {% else %} -
           {%endif%}
         </td>
-        <td class="units">
-          {% if units %} {{units}} {% else %} - {%endif%}
-        </td>
+        <td class="units">{% if units %} {{units}} {% else %} - {%endif%}</td>
       </tr>
       <tr>
         <th scope="row">דלק לנחיתה</th>
@@ -20,6 +18,11 @@
         <td class="units">
           {% if units %} {{ units }} {% else %} - {% endif %}
         </td>
+      </tr>
+      <tr>
+        <th scope="row">גרר מייצג</th>
+        <td id="DI">20</td>
+        <td class="units">DI</td>
       </tr>
     </tbody>
   </table>
